@@ -1,4 +1,4 @@
-# Java  
+# Java  VM 
 
 一般这是引入dll或者so的文件出现的，设置好java.library.path就好。
 
