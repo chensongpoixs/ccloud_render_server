@@ -16,3 +16,13 @@ bin-release/
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
+
+
+ccloud_game_mgr/.idea
+ccloud_game_mgr/out
+ccloud_game_mgr/bin
+ccloud_game_mgr/data/book.txt
+ccloud_game_mgr/data/pieceObj
+ccloud_game_mgr/data/test.log
+ccloud_game_mgr/src/cloud_game.dll
+ccloud_game_mgr/src/com_chen_cloud_cloud_game_mgr.h
