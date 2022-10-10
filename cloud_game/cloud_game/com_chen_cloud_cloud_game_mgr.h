@@ -15,6 +15,14 @@ extern "C" {
 JNIEXPORT void JNICALL Java_com_chen_cloud_cloud_1game_1mgr_nativeMethod
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_chen_cloud_cloud_game_mgr
+ * Method:    Gpuinfo
+ * Signature: (Ljava/util/List;)V
+ */
+JNIEXPORT void JNICALL Java_com_chen_cloud_cloud_1game_1mgr_Gpuinfo
+  (JNIEnv *, jobject, jobject);
+
 #ifdef __cplusplus
 }
 #endif

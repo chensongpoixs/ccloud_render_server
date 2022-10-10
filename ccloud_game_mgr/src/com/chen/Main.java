@@ -6,7 +6,12 @@
 package com.chen;
 
 import com.chen.cloud.cloud_game_mgr;
+import com.chen.gpu.GPUInfo;
+import com.chen.gpu.SystemGpu;
 import com.chen.whindow.ChineseChessMainFrame;
+
+import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -14,23 +19,15 @@ public class Main {
     {
 
 
-
+        System.out.println(System.getProperty("java.library.path"));
         cloud_game_mgr c = new cloud_game_mgr();
-        c.nativeMethod();;
-//        try {
-//
-//            ChineseChessMainFrame frame = new ChineseChessMainFrame();
-//            frame.init();;
-//            frame.setVisible(true);
-//            while (true)
-//            {
-//                System.out.println("=====\n");
-//                Thread.sleep(100);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-	// write your code here
+        Optional<List<GPUInfo>> gpu_infos =  SystemGpu.getGpuInfo();
+        if (null != gpu_infos)
+        {
+            c.Gpuinfo(gpu_infos.get());
+        }
+
+        c.nativeMethod();
+
     }
 }
