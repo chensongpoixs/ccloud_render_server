@@ -34,3 +34,10 @@ cloud_game/cloud_game/x64/*
 cloud_game/.vs/*
 cloud_game/x64/*
 cloud_game/cloud_game/cloud_game.vcxproj.user
+ccloud_game_mgr/RenderServer/libboost_system.so
+ccloud_game_mgr/RenderServer/libboost_system.so.1.60.0
+ccloud_game_mgr/RenderServer/libcloud_render.so
+ccloud_game_mgr/RenderServer/libprotobuf-lite.so.18.0.0
+ccloud_game_mgr/RenderServer/runtime/capture_hook64.dll
+ccloud_game_mgr/RenderServer/runtime/cloud_rendering.dll
+ccloud_game_mgr/RenderServer/runtime/rtc.dll
