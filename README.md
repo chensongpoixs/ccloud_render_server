@@ -1,2 +1,3 @@
-# ccloud_game_ui
-云游戏管理界面
+# ccloud_render_server
+
+云游戏、云渲染管理服务
