@@ -18,26 +18,28 @@ bin-release/
 # information for Eclipse / Flash Builder.
 
 
-ccloud_game_mgr/.idea
-ccloud_game_mgr/out
-ccloud_game_mgr/bin
-ccloud_game_mgr/data/book.txt
-ccloud_game_mgr/data/pieceObj
-ccloud_game_mgr/data/test.log
-ccloud_game_mgr/src/cloud_game.dll
-ccloud_game_mgr/src/com_chen_cloud_cloud_game_mgr.h
-ccloud_game_mgr/cloud_thrift.dll
-ccloud_game_mgr/nvidia_info.log
-ccloud_game_mgr/server.cfg
-ccloud_game_mgr/log/*
+CloudRenderServer/.idea
+CloudRenderServer/out
+CloudRenderServer/bin
+CloudRenderServer/data/book.txt
+CloudRenderServer/data/pieceObj
+CloudRenderServer/data/test.log
+CloudRenderServer/src/cloud_game.dll
+CloudRenderServer/src/com_chen_cloud_cloud_game_mgr.h
+CloudRenderServer/cloud_thrift.dll
+CloudRenderServer/nvidia_info.log
+CloudRenderServer/server.cfg
+CloudRenderServer/log/*
+CloudRenderServer/RenderServer/libboost_system.so
+CloudRenderServer/RenderServer/libboost_system.so.1.60.0
+CloudRenderServer/RenderServer/libcloud_render.so
+CloudRenderServer/RenderServer/libprotobuf-lite.so.18.0.0
+CloudRenderServer/RenderServer/runtime/capture_hook64.dll
+CloudRenderServer/RenderServer/runtime/cloud_rendering.dll
+CloudRenderServer/RenderServer/runtime/rtc.dll
+
 cloud_game/cloud_game/x64/*
 cloud_game/.vs/*
 cloud_game/x64/*
 cloud_game/cloud_game/cloud_game.vcxproj.user
-ccloud_game_mgr/RenderServer/libboost_system.so
-ccloud_game_mgr/RenderServer/libboost_system.so.1.60.0
-ccloud_game_mgr/RenderServer/libcloud_render.so
-ccloud_game_mgr/RenderServer/libprotobuf-lite.so.18.0.0
-ccloud_game_mgr/RenderServer/runtime/capture_hook64.dll
-ccloud_game_mgr/RenderServer/runtime/cloud_rendering.dll
-ccloud_game_mgr/RenderServer/runtime/rtc.dll
+
