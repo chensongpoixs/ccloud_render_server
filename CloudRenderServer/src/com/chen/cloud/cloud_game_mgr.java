@@ -45,8 +45,12 @@ public class cloud_game_mgr
         Optional<List<GPUInfo>> gpu_infos =  SystemGpu.getGpuInfo();
         if (null != gpu_infos)
         {
-//            nativeMethod();
+            System.out.println("get gpuinfo ok !!! " + gpu_infos.get().size());
             Gpuinfo(gpu_infos.get());
+        }
+        else
+        {
+            System.out.println("not find gpu info failed !!!");
         }
     }
 }
