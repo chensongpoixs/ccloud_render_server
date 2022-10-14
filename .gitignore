@@ -43,3 +43,6 @@ cloud_game/.vs/*
 cloud_game/x64/*
 cloud_game/cloud_game/cloud_game.vcxproj.user
 
+CloudRenderServer/CloudRenderServer.dll
+CloudRenderServer/CloudRenderServer.jar
+CloudRenderServer/src/META-INF/MANIFEST.MF

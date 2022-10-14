@@ -160,7 +160,10 @@ public class SystemGpu
                     value +=gpu_video.charAt(i);
                 }
             }
-
+            if (!video_info.getVideoDecode().isEmpty() && !video_info.getVideoEncode().isEmpty())
+            {
+                return video_info;
+            }
         }
 
         return video_info;
