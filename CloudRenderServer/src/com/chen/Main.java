@@ -8,6 +8,7 @@ package com.chen;
 import com.chen.cloud.cloud_game_mgr;
 import com.chen.gpu.GPUInfo;
 import com.chen.gpu.SystemGpu;
+import com.chen.log.Logger;
 import com.chen.whindow.ChineseChessMainFrame;
 
 import java.util.List;
@@ -15,8 +16,10 @@ import java.util.Optional;
 
 public class Main {
 
+    private static final Logger logger = Logger.getLogger(Main.class);
     public static void main(String[] args)
     {
+        logger.info("chnesong===============");
         if (args.length != 5)
         {
             System.out.println(" argc != 5, cmd: server_name wan_port  g_thrift_server_ip  thrift_server_port   g_thrift_client_port  [argc ="+ args.length + "]");
