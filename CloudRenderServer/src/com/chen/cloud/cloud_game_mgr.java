@@ -1,7 +1,7 @@
 package com.chen.cloud;
 
-import com.chen.gpu.GPUInfo;
-import com.chen.gpu.SystemGpu;
+import com.chen.system.GPUInfo;
+import com.chen.system.SystemGpu;
 /**
  * date: 2022-10-10
  * author:chensong

@@ -6,19 +6,17 @@
 package com.chen;
 
 import com.chen.cloud.cloud_game_mgr;
-import com.chen.gpu.GPUInfo;
-import com.chen.gpu.SystemGpu;
 import com.chen.log.Logger;
-import com.chen.whindow.ChineseChessMainFrame;
-
-import java.util.List;
-import java.util.Optional;
+import com.chen.system.Util;
 
 public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class);
     public static void main(String[] args)
     {
+
+        Util.getGpuInfo();
+
         logger.info("chnesong===============");
         if (args.length != 5)
         {
