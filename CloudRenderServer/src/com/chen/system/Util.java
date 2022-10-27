@@ -30,7 +30,8 @@ public class Util
 
     }
 
-    public static CpuInfo GetCpuInfo(String cpu) throws IOException {
+    public static CpuInfo GetCpuInfo(String cpu) throws IOException
+    {
         CpuInfo cpu_info = null;
 //        String cmd_cpu_info = "typeperf \"processor(_total)\\% processor time\" -sc 1";
 //        String result = Cmmmod(cmd_cpu_info);
