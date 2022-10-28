@@ -2,7 +2,7 @@
  * date: 2022-10-10
  * author:chensong
  */
-package com.chen.gpu;
+package com.chen.system;
 
 import java.util.List;
 

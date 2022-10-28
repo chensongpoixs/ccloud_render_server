@@ -5,18 +5,19 @@
 
 package com.chen;
 
-import com.chen.cloud.cloud_game_mgr;
-import com.chen.gpu.GPUInfo;
-import com.chen.gpu.SystemGpu;
-import com.chen.whindow.ChineseChessMainFrame;
-
-import java.util.List;
-import java.util.Optional;
+import com.chen.cloud.CloudRenderServer;
+import com.chen.log.Logger;
+import com.chen.system.Util;
 
 public class Main {
 
+    private static final Logger logger = Logger.getLogger(Main.class);
     public static void main(String[] args)
     {
+
+        Util.getGpuInfo();
+
+        logger.info("chnesong===============");
         if (args.length != 5)
         {
             System.out.println(" argc != 5, cmd: server_name wan_port  g_thrift_server_ip  thrift_server_port   g_thrift_client_port  [argc ="+ args.length + "]");
@@ -27,13 +28,13 @@ public class Main {
 
 
 //        //String server_name, int wan_port, String thrift_server_host, int thrift_server_port, int thrift_client_port
-        boolean init = cloud_game_mgr.cloudrenderinit(args[0], Integer.parseInt(args[1]), args[2],Integer.parseInt( args[3]), Integer.parseInt(args[4]));
+        boolean init = CloudRenderServer.CloudRenderInit(args[0], Integer.parseInt(args[1]), args[2],Integer.parseInt( args[3]), Integer.parseInt(args[4]));
 
 
         if (init)
         {
 
-           init =        cloud_game_mgr.cloudrenderloop();
+           init =        CloudRenderServer.CloudRenderLoop();
 
 
         }
@@ -52,7 +53,7 @@ public class Main {
 //
 //            }
 //        }
-        cloud_game_mgr.cloudrenderdestroy();;
+        CloudRenderServer.CloudRenderDestory();;
 
 
 
