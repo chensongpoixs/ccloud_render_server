@@ -30,6 +30,7 @@ public class CloudRenderServer
     public static native void CloudCpuInfo( CpuInfo cpuInfo);
 
 
+    public static native void CloudRenderStop();
 
 
 //    public native void info(String value);

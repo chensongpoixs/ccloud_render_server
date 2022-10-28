@@ -13,10 +13,10 @@ import sun.misc.SignalHandler;
 
 //import static com.chen.cloud.cloud_game_mgr.Gpuinfo;
 
-public class Main   {
+public class Main   implements  SignalHandler {
 
     private static final Logger logger = Logger.getLogger(Main.class);
-    public static void main(String[] args)
+    public static void main(String[] args) throws InterruptedException
     {
 
 
@@ -28,6 +28,15 @@ public class Main   {
         }
 
 //        System.out.println(System.getProperty("java.library.path"));
+        Main testSignalHandler = new Main();
+
+// install signals
+        Signal.handle(new Signal("INT"), testSignalHandler);
+        Signal.handle(new Signal("TERM"), testSignalHandler);
+
+//        Signal.handle(new Signal("USR1"), testSignalHandler);
+
+//        Signal.handle(new Signal("USR2"), testSignalHandler);
 
 
 //        //String server_name, int wan_port, String thrift_server_host, int thrift_server_port, int thrift_client_port
@@ -77,6 +86,13 @@ public class Main   {
 
 //        c.nativeMethod();
 
+    }
+
+    @Override
+    public void handle(Signal sig)
+    {
+        CloudRenderServer.CloudRenderStop();;
+        System.out.println("Signal......");
     }
 
 //    @Override
