@@ -183,7 +183,7 @@ public class SystemGpu
         List<GPUInfo> gpuInfoList = new ArrayList<>();
         gpu.forEach(element -> {
             GPUInfo gpuInfo = new GPUInfo();
-            String uuid = element.element("uuid").getText();
+            String uuid = element.element("product_name").getText();
             String gpu_index = element.element("gpu_module_id").getText();
             String gpu_cmd  = "nvidia-smi -i "+gpu_index+"  -q -d UTILIZATION";
             gpuInfo.setGpuIndex(gpu_index);
