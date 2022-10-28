@@ -32,9 +32,10 @@ public class Util
 
     }
 
-    public static List<CpuInfo> GetCpuInfo(String cpu) throws IOException
+    public static CpuInfo  GetCpuInfo(String cpu) throws IOException
     {
-        List<CpuInfo> cpu_infos = new ArrayList<>();
+        CpuInfo cpuInfo = null;
+//        List<CpuInfo> cpu_infos = new ArrayList<>();
 //        String cmd_cpu_info = "typeperf \"processor(_total)\\% processor time\" -sc 1";
 //        String result = Cmmmod(cmd_cpu_info);
 //        System.out.println(result);
@@ -52,10 +53,10 @@ public class Util
                  ++line;
                  if (line == 3)
                  {
-                    CpuInfo cpu_info = new CpuInfo(data_time, cpu_precent);
+                     cpuInfo = new CpuInfo(data_time, cpu_precent);
 
-                     cpu_infos.add(cpu_info);
-                    return cpu_infos;
+
+                    return cpuInfo;
                  }
              }
              else if (cpu.charAt(i) != '"' && cpu.charAt(i) != '\r' && cpu.charAt(i) != ',')
@@ -79,16 +80,16 @@ public class Util
         }
 
 
-        return cpu_infos;
+        return cpuInfo;
     }
 
-    public  static  Optional<List<CpuInfo>> getGpuInfo()
+    public  static  Optional< CpuInfo > getGpuInfo()
     {
         try {
             String cmd_cpu_info = "typeperf \"processor(_total)\\% processor time\" -sc 1";
             String result = Cmmmod(cmd_cpu_info);
 //            System.out.println(result);
-            List<CpuInfo> cpuInfos = GetCpuInfo(result);
+             CpuInfo  cpuInfos = GetCpuInfo(result);
             System.out.println(cpuInfos.toString());
             return Optional.of(cpuInfos);
         } catch (Exception e) {

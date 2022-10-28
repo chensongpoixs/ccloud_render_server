@@ -27,7 +27,7 @@ public class CloudRenderServer
     public static native void CloudRenderDestory();
 
     public static  native void CloudGpuinfo(List<GPUInfo> gpuInfos);
-    public static native void CloudCpuInfo(List<CpuInfo> cpuInfo);
+    public static native void CloudCpuInfo( CpuInfo cpuInfo);
 
 
 
@@ -52,8 +52,8 @@ public class CloudRenderServer
             CloudGpuinfo(gpu_infos.get());
         }
 
-        Optional<List<CpuInfo>> cpuInfo = Util.getGpuInfo();
-        if (null != cpuInfo && cpuInfo.get().size() > 0)
+        Optional<CpuInfo> cpuInfo = Util.getGpuInfo();
+        if (null != cpuInfo && cpuInfo.get() != null)
         {
             CloudCpuInfo(cpuInfo.get());
         }
