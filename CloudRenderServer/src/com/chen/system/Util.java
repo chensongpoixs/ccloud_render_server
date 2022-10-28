@@ -6,6 +6,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Util
@@ -30,9 +32,9 @@ public class Util
 
     }
 
-    public static CpuInfo GetCpuInfo(String cpu) throws IOException
+    public static List<CpuInfo> GetCpuInfo(String cpu) throws IOException
     {
-        CpuInfo cpu_info = null;
+        List<CpuInfo> cpu_infos = new ArrayList<>();
 //        String cmd_cpu_info = "typeperf \"processor(_total)\\% processor time\" -sc 1";
 //        String result = Cmmmod(cmd_cpu_info);
 //        System.out.println(result);
@@ -43,15 +45,17 @@ public class Util
 //        String temp = "";
         for (int i = 0; i < cpu.length(); ++i)
         {
-            System.out.println(cpu.charAt(i));
+//            System.out.println(cpu.charAt(i));
              if (cpu.charAt(i) == '\n')
              {
 
                  ++line;
                  if (line == 3)
                  {
-                     cpu_info = new CpuInfo(data_time, cpu_precent);
-                     return cpu_info;
+                    CpuInfo cpu_info = new CpuInfo(data_time, cpu_precent);
+
+                     cpu_infos.add(cpu_info);
+                    return cpu_infos;
                  }
              }
              else if (cpu.charAt(i) != '"' && cpu.charAt(i) != '\r' && cpu.charAt(i) != ',')
@@ -75,16 +79,16 @@ public class Util
         }
 
 
-        return cpu_info;
+        return cpu_infos;
     }
 
-    public  static  Optional<CpuInfo> getGpuInfo()
+    public  static  Optional<List<CpuInfo>> getGpuInfo()
     {
         try {
             String cmd_cpu_info = "typeperf \"processor(_total)\\% processor time\" -sc 1";
             String result = Cmmmod(cmd_cpu_info);
-            System.out.println(result);
-            CpuInfo cpuInfos = GetCpuInfo(result);
+//            System.out.println(result);
+            List<CpuInfo> cpuInfos = GetCpuInfo(result);
             System.out.println(cpuInfos.toString());
             return Optional.of(cpuInfos);
         } catch (Exception e) {

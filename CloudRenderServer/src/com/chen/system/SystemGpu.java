@@ -160,9 +160,9 @@ public class SystemGpu
                     value +=gpu_video.charAt(i);
                 }
             }
-            if (!video_info.getVideoDecode().isEmpty() && !video_info.getVideoEncode().isEmpty())
+            if (video_info.getVideoDecode().length() > 0&&  video_info.getVideoEncode().length() > 0)
             {
-                return video_info;
+               break;
             }
         }
 
@@ -221,6 +221,7 @@ public class SystemGpu
             int intTotal = Integer.parseInt(total.split(" ")[0]);
             int intUsed = Integer.parseInt(used.split(" ")[0]);
             gpuInfo.setUsageRate((int) ((float) intUsed / intTotal * 100));
+            System.out.println(gpuInfo.ToString());
             gpuInfoList.add(gpuInfo);
         });
         return gpuInfoList;

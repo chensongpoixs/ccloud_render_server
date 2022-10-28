@@ -9,6 +9,12 @@ public class gpuVideo
     private String videoEncode;
 
     private String videoDecode;
+    public gpuVideo()
+    {
+        super();
+         this.videoDecode = "";
+         this.videoEncode = "";
+    }
     public void setVideoEncode(String value)
     {
         this.videoEncode = value;

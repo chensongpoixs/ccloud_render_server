@@ -9,13 +9,14 @@ import com.chen.cloud.CloudRenderServer;
 import com.chen.log.Logger;
 import com.chen.system.Util;
 
+//import static com.chen.cloud.cloud_game_mgr.Gpuinfo;
+
 public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class);
     public static void main(String[] args)
     {
 
-        Util.getGpuInfo();
 
         logger.info("chnesong===============");
         if (args.length != 5)
@@ -30,7 +31,6 @@ public class Main {
 //        //String server_name, int wan_port, String thrift_server_host, int thrift_server_port, int thrift_client_port
         boolean init = CloudRenderServer.CloudRenderInit(args[0], Integer.parseInt(args[1]), args[2],Integer.parseInt( args[3]), Integer.parseInt(args[4]));
 
-
         if (init)
         {
 
@@ -38,6 +38,7 @@ public class Main {
 
 
         }
+
 
 
 
@@ -54,6 +55,7 @@ public class Main {
 //            }
 //        }
         CloudRenderServer.CloudRenderDestory();;
+
 
 
 

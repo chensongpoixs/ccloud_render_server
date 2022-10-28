@@ -23,12 +23,12 @@ public class CpuInfo
                 '}';
     }
 
-    public String getM_date_time()
+    public String GetDateTime()
     {
         return m_date_time;
     }
 
-    public String getM_cpu_precent()
+    public String GetCpuPercentage()
     {
         return m_cpu_precent;
     }
