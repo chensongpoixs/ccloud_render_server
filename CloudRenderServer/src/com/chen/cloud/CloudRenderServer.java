@@ -33,30 +33,5 @@ public class CloudRenderServer
     public static native void CloudRenderStop();
 
 
-//    public native void info(String value);
 
-
-
-    public static  void callback()
-    {
-        System.out.println("In Java");
-    }
-
-
-    public static void CppSystemInfo()
-    {
-        System.out.println("CppSystemInfo");
-        Optional<List<GPUInfo>> gpu_infos =  SystemGpu.getGpuInfo();
-        if (null != gpu_infos)
-        {
-//            nativeMethod();
-            CloudGpuinfo(gpu_infos.get());
-        }
-
-        Optional<CpuInfo> cpuInfo = Util.getGpuInfo();
-        if (null != cpuInfo && cpuInfo.get() != null)
-        {
-            CloudCpuInfo(cpuInfo.get());
-        }
-    }
 }
