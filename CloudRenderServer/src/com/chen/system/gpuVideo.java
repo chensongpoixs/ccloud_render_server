@@ -9,11 +9,14 @@ public class gpuVideo
     private String videoEncode;
 
     private String videoDecode;
+
+    private String Gpu;
     public gpuVideo()
     {
         super();
          this.videoDecode = "";
          this.videoEncode = "";
+         this.Gpu = "";
     }
     public void setVideoEncode(String value)
     {
@@ -35,8 +38,20 @@ public class gpuVideo
         return this.videoDecode;
     }
 
-    public String ToString()
-    {
-        return "[encode = "+this.videoEncode+"][ video decode = " + this.videoDecode + "]";
+    public String getGpu() {
+        return Gpu;
+    }
+
+    public void setGpu(String gpu) {
+        Gpu = gpu;
+    }
+
+    @Override
+    public String toString() {
+        return "gpuVideo{" +
+                "videoEncode='" + videoEncode + '\'' +
+                ", videoDecode='" + videoDecode + '\'' +
+                ", Gpu='" + Gpu + '\'' +
+                '}';
     }
 }

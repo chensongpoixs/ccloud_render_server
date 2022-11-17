@@ -87,7 +87,7 @@ public class SystemGpu
      * @return xml字符串
      * @throws IOException 获取显卡信息错误
      **/
-    public static String getGpuEncodeDecodeInfo(String cmd  ) throws IOException
+    public static String getcommand(String cmd  ) throws IOException
     {
         Process process;
         String result = "";
@@ -129,6 +129,10 @@ public class SystemGpu
                         {
                             video_info.setVideoDecode(String.valueOf(value));
                         }
+                        else if (key.equals("Gpu"))
+                        {
+                            video_info.setGpu(value);
+                        }
                     }
                 }
             }
@@ -169,13 +173,24 @@ public class SystemGpu
         return video_info;
     }
 
+    public static List<GPUInfo> convertGpuObject(String gpuarrayinfo)
+    {
+        List<GPUInfo> gpuInfoList = new ArrayList<>();
+
+
+
+
+
+        return gpuInfoList;
+    }
     /**
      * 获取gpu信息（暂时只支持nvidia-smi）
      *
      * @return gpu信息集合
      * @throws DocumentException xml解析错误
      */
-    public static List<GPUInfo> convertXmlToGpuObject(String xmlGpu) throws DocumentException {
+    public static List<GPUInfo> convertXmlToGpuObject(String xmlGpu) throws DocumentException
+    {
         //忽略dtd
         xmlGpu = xmlGpu.replaceAll(REG, "");
         Document document = DocumentHelper.parseText(xmlGpu);
@@ -235,7 +250,10 @@ public class SystemGpu
     public static Optional<List<GPUInfo>> getGpuInfo()
     {
         try {
+            // nvidia-smi  --list-gpus
+            String cmd = "nvidia-smi  --list-gpus";
             String gpuXmlInfo = getGpuXmlInfo();
+//            String gpuarrayinfo = getcommand(cmd);
 //            System.out.println(gpuXmlInfo);
             List<GPUInfo> gpuInfos = convertXmlToGpuObject(gpuXmlInfo);
             return Optional.of(gpuInfos);
@@ -253,7 +271,7 @@ public class SystemGpu
     public static Optional<String> getGpuEncode_Decode_Info(String cmd)
     {
         try {
-            String gpuXmlInfo = getGpuEncodeDecodeInfo(cmd);
+            String gpuXmlInfo = getcommand(cmd);
 //            System.out.println(gpuXmlInfo);
 //            List<GPUInfo> gpuInfos = convertXmlToGpuObject(gpuXmlInfo);
             return Optional.of(gpuXmlInfo);
