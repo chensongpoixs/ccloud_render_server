@@ -199,16 +199,16 @@ public class SystemGpu
         gpu.forEach(element -> {
             GPUInfo gpuInfo = new GPUInfo();
             String uuid = element.element("product_name").getText();
-            String gpu_index = element.element("gpu_module_id").getText();
-            String gpu_cmd  = "nvidia-smi -i "+gpu_index+"  -q -d UTILIZATION";
-            gpuInfo.setGpuIndex(gpu_index);
+//            String gpu_index = element.element("gpu_module_id").getText();
+            String gpu_cmd  = "nvidia-smi -i "+gpuInfoList.size()+"  -q -d UTILIZATION";
+            gpuInfo.setGpuIndex(String.valueOf( gpuInfoList.size()));
             Optional<String> gpu_info= getGpuEncode_Decode_Info(gpu_cmd );
             if (gpu_info != null)
             {
                 gpuVideo video_info =  convertGpuVideo(gpu_info.get());
                 gpuInfo.setVideoEncode(video_info.getVideoEncode());
                 gpuInfo.setVideoDecode(video_info.getVideoDecode());
-
+                gpuInfo.setUsageRate(Integer.parseInt(video_info.getGpu()));
             }
 
             Element fbMemoryUsage = element.element("fb_memory_usage");
@@ -219,23 +219,7 @@ public class SystemGpu
             gpuInfo.setUsedMemory(used);
             gpuInfo.setFreeMemory(free);
             gpuInfo.setName(uuid);
-//            Element processes = element.element("processes");
-//            List<Element> infos = processes.elements("process_info");
-//            List<ProcessInfo> processInfos = new ArrayList<>();
-//            infos.forEach(info -> {
-//                ProcessInfo processInfo = new ProcessInfo();
-//                String pid = info.element("pid").getText();
-//                String name = info.element("process_name").getText();
-//                String usedMemory = info.element("used_memory").getText();
-//                processInfo.setPid(pid);
-//                processInfo.setName(name);
-//                processInfo.setUsedMemory(usedMemory);
-//                processInfos.add(processInfo);
-//            });
-//            gpuInfo.setProcessInfos(processInfos);
-            int intTotal = Integer.parseInt(total.split(" ")[0]);
-            int intUsed = Integer.parseInt(used.split(" ")[0]);
-            gpuInfo.setUsageRate((int) ((float) intUsed / intTotal * 100));
+
             System.out.println(gpuInfo.ToString());
             gpuInfoList.add(gpuInfo);
         });
