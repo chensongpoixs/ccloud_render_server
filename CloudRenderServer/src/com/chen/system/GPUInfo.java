@@ -4,6 +4,7 @@
  */
 package com.chen.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GPUInfo
@@ -34,6 +35,19 @@ public class GPUInfo
     private String VideoDecode;
    // private gpuVideo GpuVideo;
 
+
+    public GPUInfo()
+    {
+        this.gpuIndex = "";
+        this.name = "";
+        this.totalMemory = "";
+        this.usedMemory = "";
+        this.freeMemory = "";
+        this.usageRate = 0;
+        this.processInfos = new ArrayList<ProcessInfo>();
+        this.VideoEncode = "";
+        this.VideoDecode = "";
+    }
 
     public void setGpuIndex(String value)
     {

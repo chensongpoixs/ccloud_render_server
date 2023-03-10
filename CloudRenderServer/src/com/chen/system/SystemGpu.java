@@ -45,6 +45,13 @@ public class SystemGpu
 
     }
 
+
+//    public static String GetMttGpuCountInfo(String cmd)
+//    {
+//        getcommand();
+//    }
+
+
     public static int size(String value)
     {
         int ret = 0;
@@ -173,6 +180,159 @@ public class SystemGpu
         return video_info;
     }
 
+    /**
+     *
+     * @param gpuinfo
+     * @return
+     */
+    public static List<GPUInfo> ParseMttGpuCountInfo(String gpuinfo)
+    {
+        List<GPUInfo>  gpuinfos = new ArrayList<>();
+
+
+//        String key = "";
+//        String value = "";
+
+        String gpuname = "";
+        boolean read = false;
+        for (int i = 0; i < gpuinfo.length(); ++i)
+        {
+            if (gpuinfo.charAt(i) == ':')
+            {
+                gpuname = "";
+                read = true;
+            }
+            else if (gpuinfo.charAt(i) == '(')
+            {
+                GPUInfo info = new GPUInfo();
+                info.setName(gpuname);
+                info.setGpuIndex( String.valueOf(gpuinfos.size()));
+                gpuinfos.add(info);
+            }
+            else if (gpuinfo.charAt(i) == '\n')
+            {
+                gpuname = "";
+                read = false;
+            }
+            else if (gpuinfo.charAt(i) != ' ')
+            {
+                gpuname +=gpuinfo.charAt(i);
+            }
+        }
+
+
+        return gpuinfos;
+    }
+
+    public static GPUInfo  PareseMttGpuAllInfo(String gpu_info)
+    {
+        GPUInfo info_ptr = null;
+//        gpuVideo video_info = new gpuVideo();
+
+        String key = "" ;
+        String value = "";
+        int indexkey = 0;
+        int indexvalue = 0;
+        boolean read_key = true;
+        for (int i = 0; i < gpu_info.length(); ++i)
+        {
+            if (gpu_info.charAt(i) == '\r')
+            {
+                if ((i + 1)  < gpu_info.length() &&  gpu_info.charAt((i + 1)) == '\n')
+                {
+                    {
+                        if (key.equals( "Total"))
+                        {
+                            if (info_ptr == null)
+                            {
+                                info_ptr = new GPUInfo();
+                            }
+                            info_ptr.setTotalMemory(value);
+//                            video_info.setVideoEncode( value);
+                        }
+                        else if ( key.equals("Used"))
+                        {
+                            if (info_ptr == null)
+                            {
+                                info_ptr = new GPUInfo();
+                            }
+                            info_ptr.setUsedMemory(value);
+//                            video_info.setVideoDecode(String.valueOf(value));
+                        }
+                        else if (key.equals("Free"))
+                        {
+                            if (info_ptr == null)
+                            {
+                                info_ptr = new GPUInfo();
+                            }
+                            info_ptr.setFreeMemory(value);
+//                            video_info.setGpu(value);
+                        }
+                        else if (key.equals("Gpu"))
+                        {
+                            if (info_ptr == null)
+                            {
+                                info_ptr = new GPUInfo();
+                            }
+                            info_ptr.setUsageRate(Integer.parseInt(value) );
+                        }
+                    }
+                }
+            }
+            else if (gpu_info.charAt(i) == ' '  || gpu_info.charAt(i) == '%' )
+            {
+
+            }
+            else if (gpu_info.charAt(i) == '\n')
+            {
+                read_key = true;
+                indexkey  = 0;
+                indexvalue = 0;
+                key = "";
+                value = "";
+            }
+            else if (gpu_info.charAt(i) == ':')
+            {
+                read_key = false;
+
+            }
+            else
+            {
+                if (read_key)
+                {
+                    key +=gpu_info.charAt(i);
+                }
+                else
+                {
+                    value +=gpu_info.charAt(i);
+                }
+            }
+//            if (gpu_info.getVideoDecode().length() > 0&&  gpu_info.getVideoEncode().length() > 0)
+//            {
+//                break;
+//            }
+        }
+
+
+
+        return info_ptr;
+    }
+
+    public static List<GPUInfo> GetAllMttGpuInfos(List<GPUInfo> old_gpu_infos)
+    {
+        List<GPUInfo> new_gpu_infos = new ArrayList<>();
+
+
+        String key = "";
+        String value = "";
+
+
+
+        return new_gpu_infos;
+    }
+
+
+
     public static List<GPUInfo> convertGpuObject(String gpuarrayinfo)
     {
         List<GPUInfo> gpuInfoList = new ArrayList<>();
@@ -246,6 +406,52 @@ public class SystemGpu
             return Optional.empty();
         }
     }
+
+
+    /**
+     *
+     * @return
+     */
+    public static Optional<List<GPUInfo>> GetMttGpuInfo()
+    {
+       try {
+           // nvidia-smi  --list-gpus
+           String cmd = "mthreads-gmi -L ";
+           String MttGpuCountInfo = getcommand(cmd);
+
+           List<GPUInfo> gpunames =   ParseMttGpuCountInfo(MttGpuCountInfo);
+           List<GPUInfo> gpuInfos = new ArrayList<GPUInfo>();
+           for(GPUInfo gpu : gpunames)
+           {
+               String mtt_all_info_cmd = "mthreads-gmi -q";
+               GPUInfo gpuInfo = PareseMttGpuAllInfo(mtt_all_info_cmd);
+               if (null != gpuInfo )
+               {
+                   gpuInfo.setGpuIndex(gpu.getGpuIndex());
+                   gpuInfo.setName(gpu.getName());
+                   gpuInfos.add(gpuInfo);
+               }
+           }
+           if (gpuInfos.isEmpty())
+           {
+               return Optional.empty();
+           }
+           return Optional.of(gpuInfos);
+          // String gpuXmlInfo = getGpuXmlInfo();
+//            String gpuarrayinfo = getcommand(cmd);
+//            System.out.println(gpuXmlInfo);
+//           List<GPUInfo> gpuInfos = convertXmlToGpuObject(gpuXmlInfo);
+//           return Optional.of(gpuInfos);
+       }
+       catch (Exception e)
+       {
+           return Optional.empty();
+       }
+
+//        return Optional.empty();
+    }
+
+
 
     /**
      * 获取gpu信息

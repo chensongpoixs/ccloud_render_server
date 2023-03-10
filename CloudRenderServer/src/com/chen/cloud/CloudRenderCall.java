@@ -14,14 +14,28 @@ public class CloudRenderCall
     {
         System.out.println("CppGpuInfo");
         Optional<List<GPUInfo>> gpu_infos =  SystemGpu.getGpuInfo();
-        if (null != gpu_infos)
+        if (null != gpu_infos && !gpu_infos.get().isEmpty() )
+        {
+//            nativeMethod();
+            CloudRenderServer. CloudGpuinfo(gpu_infos.get());
+        }
+    }
+
+    public static void CppMttGpuInfo()
+    {
+        System.out.println("CppMttGpuinfo");
+
+        Optional<List<GPUInfo>> gpu_infos = SystemGpu.GetMttGpuInfo();
+        if (null != gpu_infos && !gpu_infos.get().isEmpty() )
         {
 //            nativeMethod();
             CloudRenderServer. CloudGpuinfo(gpu_infos.get());
         }
 
-
     }
+
+
+
 
     public static void CppCpuInfo()
     {
