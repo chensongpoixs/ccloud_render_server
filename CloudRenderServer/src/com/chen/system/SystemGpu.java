@@ -226,7 +226,7 @@ public class SystemGpu
 
     public static GPUInfo  PareseMttGpuAllInfo(String gpu_info)
     {
-//        System.out.println("[all gpu info cmd = "+ gpu_info+"]");
+        System.out.println("[all gpu info cmd = "+ gpu_info+"]");
         GPUInfo info_ptr = null;
         String key = "" ;
         String value = "";
@@ -270,7 +270,22 @@ public class SystemGpu
                     }
                     info_ptr.setUsageRate(Integer.parseInt(value) );
                 }
-
+                else if (key.equals("Encoder"))
+                {
+                    if (info_ptr == null)
+                    {
+                        info_ptr = new GPUInfo();
+                    }
+                    info_ptr.setVideoEncode( value );
+                }
+                else if (key.equals("Decoder"))
+                {
+                    if (info_ptr == null)
+                    {
+                        info_ptr = new GPUInfo();
+                    }
+                    info_ptr.setVideoDecode( value );
+                }
                 read_key = true;
                 indexkey  = 0;
                 indexvalue = 0;
