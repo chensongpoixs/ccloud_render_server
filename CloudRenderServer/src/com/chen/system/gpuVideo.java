@@ -13,7 +13,7 @@ public class gpuVideo
     private String Gpu;
     public gpuVideo()
     {
-        super();
+
          this.videoDecode = "";
          this.videoEncode = "";
          this.Gpu = "";
@@ -49,9 +49,9 @@ public class gpuVideo
     @Override
     public String toString() {
         return "gpuVideo{" +
-                "videoEncode='" + videoEncode + '\'' +
-                ", videoDecode='" + videoDecode + '\'' +
-                ", Gpu='" + Gpu + '\'' +
+                "videoEncode='" + this.videoEncode + '\'' +
+                ", videoDecode='" + this.videoDecode + '\'' +
+                ", Gpu='" + this.Gpu + '\'' +
                 '}';
     }
 }

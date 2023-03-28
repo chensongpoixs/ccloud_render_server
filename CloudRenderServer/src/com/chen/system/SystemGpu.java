@@ -127,25 +127,40 @@ public class SystemGpu
             {
                 if ((i + 1)  < gpu_video.length() &&  gpu_video.charAt((i + 1)) == '\n')
                 {
+//                    System.out.println("[key = " + key + "]-----[ value = " + value + "]");
+                    if (key.equals( "Encoder"))
                     {
-                        if (key.equals( "Encoder"))
-                        {
-                            video_info.setVideoEncode( value);
-                        }
-                        else if ( key.equals("Decoder"))
-                        {
-                            video_info.setVideoDecode(String.valueOf(value));
-                        }
-                        else if (key.equals("Gpu"))
-                        {
-                            video_info.setGpu(value);
-                        }
+                        video_info.setVideoEncode( value);
                     }
+                    else if ( key.equals("Decoder"))
+                    {
+                        video_info.setVideoDecode(value);
+                    }
+                    else if (key.equals("Gpu"))
+                    {
+                        video_info.setGpu(value);
+                    }
+
                 }
             }
-            else if (gpu_video.charAt(i) == ' '  || gpu_video.charAt(i) == '%' )
+            else if (gpu_video.charAt(i) == ' '   )
             {
-
+//                System.out.println("[key = " + key + "][ value = " + value + "]");
+            }
+            else if ( gpu_video.charAt(i) == '%')
+            {
+                if (key.equals( "Encoder"))
+                {
+                    video_info.setVideoEncode( value);
+                }
+                else if ( key.equals("Decoder"))
+                {
+                    video_info.setVideoDecode(value);
+                }
+                else if (key.equals("Gpu"))
+                {
+                    video_info.setGpu(value);
+                }
             }
             else if (gpu_video.charAt(i) == '\n')
             {
@@ -158,7 +173,7 @@ public class SystemGpu
             else if (gpu_video.charAt(i) == ':')
             {
                 read_key = false;
-
+//                System.out.println("[key = " + key + "]:[ value = " + value + "]");
             }
             else
             {
@@ -171,7 +186,7 @@ public class SystemGpu
                     value +=gpu_video.charAt(i);
                 }
             }
-            if (video_info.getVideoDecode().length() > 0&&  video_info.getVideoEncode().length() > 0)
+            if (video_info.getVideoDecode().length() > 0&&  video_info.getVideoEncode().length() > 0 && video_info.getGpu().length()> 0)
             {
                break;
             }
@@ -368,11 +383,17 @@ public class SystemGpu
             if (gpu_info != null)
             {
                 gpuVideo video_info =  convertGpuVideo(gpu_info.get());
+//                System.out.println(video_info.toString());
                 gpuInfo.setVideoEncode(video_info.getVideoEncode());
                 gpuInfo.setVideoDecode(video_info.getVideoDecode());
                 gpuInfo.setUsageRate(Integer.parseInt(video_info.getGpu()));
-            }
 
+//                System.out.println("gpu info != null -->>>>>>>>>>>>>");
+            }
+            else
+            {
+//                System.out.println("gpu info == null -->>>>>>>>>>>>>");
+            }
             Element fbMemoryUsage = element.element("fb_memory_usage");
             String total = fbMemoryUsage.element("total").getText();
             String used = fbMemoryUsage.element("used").getText();
