@@ -180,3 +180,5 @@ test/src/com/chen/whindow/DiyButton.java
 test/src/com/chen/whindow/InformationBoard.java
 test/src/com/chen/whindow/TimerThread.java
 test/src/com/chen/whindow/LabelEvent/ChessPieceClick.java
+CloudRenderServerMgr/.vs/
+CloudRenderServerMgr/vsout/ 
