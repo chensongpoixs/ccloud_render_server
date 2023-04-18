@@ -76,6 +76,10 @@ BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CMFCApplication1Dlg::OnBnClickedOk)
 	ON_BN_CLICKED(RenderServerStart, &CMFCApplication1Dlg::OnBnClickedRenderserverstart)
 	//ON_EN_CHANGE(localhost, &CMFCApplication1Dlg::OnEnChangelocalhost)
+	//ON_STN_CLICKED(render_server_status, &CMFCApplication1Dlg::OnStnClickedserverstatus)
+	//ON_BN_CLICKED(media_rtc_server_start, &CMFCApplication1Dlg::OnBnClickedrtcserverstart)
+	//ON_BN_CLICKED(RenderServerStart2, &CMFCApplication1Dlg::OnBnClickedRenderserverstart2)
+	ON_BN_CLICKED(MediaRtcServerStart, &CMFCApplication1Dlg::OnBnClickedMediartcserverstart)
 END_MESSAGE_MAP()
 
 // CMFCApplication1Dlg 消息处理程序
@@ -194,7 +198,7 @@ void CMFCApplication1Dlg::OnPaint()
 		GetClientRect(&rect);
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
-
+		STILL_ACTIVE;
 		// 绘制图标
 		dc.DrawIcon(x, y, m_hIcon);
 
@@ -235,21 +239,27 @@ void CMFCApplication1Dlg::OnBnClickedOk()
 	CDialogEx::OnOK();
 }
 #define  _CRT_SECURE_NO_WARNINGS
-static FILE  * out_file_ptr = ::fopen("./mfc.log", "wb+");
+//static FILE  * out_file_ptr = ::fopen("./mfc.log", "wb+");
 void CMFCApplication1Dlg::OnBnClickedRenderserverstart()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	fprintf(out_file_ptr, "[%s][%d]\n", __FUNCTION__, __LINE__);
-	fflush(out_file_ptr);
+	/*fprintf(out_file_ptr, "[%s][%d]\n", __FUNCTION__, __LINE__);
+	fflush(out_file_ptr);*/
 	CString str;
 	GetDlgItem(localhost_IP)->GetWindowText(str);
 	std::string pp = CT2A(str.GetString());
-	fprintf(out_file_ptr, "[%s][%d][%s]\n", __FUNCTION__, __LINE__, pp.c_str());
-	fflush(out_file_ptr);
+	/*fprintf(out_file_ptr, "[%s][%d][%s]\n", __FUNCTION__, __LINE__, pp.c_str());
+	fflush(out_file_ptr);*/
 	//GetDlgItem(wan_address)->SetWindowTextW(str);
 	//GetDlgItem(render_server_status)->(_T(""));
 	//将按钮修改为BS_OWNERDRAW风格，允许button采用自绘模式
+	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
+	//SendMessage( , WM_SETTEXT, 0, _T("")); // 将控件文本内容设置为空字符串
 	GetDlgItem(render_server_status)->SetWindowText(_T("启动..."));
+	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
+	//SetWindowText(GetDlgItem(render_server_status), _T(""));
+	//SetWindowText(GetDlgItem(render_server_status), _T(""));
+	//SetDlgItemText(render_server_status, _T(""), _T(""));
 	//GetDlgItem(RenderServerStart)->SetTextColor(RGB(255, 0, 0));
 	//GetDlgItem(render_server_status)->SetTextColor(RGB(255, 0, 0));
 	GetDlgItem(RenderServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
@@ -268,3 +278,36 @@ void CMFCApplication1Dlg::OnBnClickedRenderserverstart()
 //	fflush(out_file_ptr);
 //	// TODO:  在此添加控件通知处理程序代码
 //}
+
+//
+//void CMFCApplication1Dlg::OnStnClickedserverstatus()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//}
+
+
+void CMFCApplication1Dlg::OnBnClickedrtcserverstart()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+//void CMFCApplication1Dlg::OnBnClickedRenderserverstart2()
+//{
+//	// TODO: 在此添加控件通知处理程序代码
+//}
+
+
+void CMFCApplication1Dlg::OnBnClickedMediartcserverstart()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	m_media_rtc_mgr.startup();
+	GetDlgItem(media_rtc_server_status)->SetWindowText(_T("启动..."));
+	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
+	//SetWindowText(GetDlgItem(render_server_status), _T(""));
+	//SetWindowText(GetDlgItem(render_server_status), _T(""));
+	//SetDlgItemText(render_server_status, _T(""), _T(""));
+	//GetDlgItem(RenderServerStart)->SetTextColor(RGB(255, 0, 0));
+	//GetDlgItem(render_server_status)->SetTextColor(RGB(255, 0, 0));
+	GetDlgItem(MediaRtcServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
+}

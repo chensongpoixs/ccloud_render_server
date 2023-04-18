@@ -116,7 +116,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
@@ -166,7 +166,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -192,6 +192,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cmedia_rtc_server_mgr.h" />
+    <ClInclude Include="cprocess_define.h" />
+    <ClInclude Include="cutil.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFCApplication1.h" />
     <ClInclude Include="MFCApplication1Dlg.h" />
@@ -200,6 +203,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmedia_rtc_server_mgr.cpp" />
+    <ClCompile Include="cutil.cpp" />
     <ClCompile Include="MFCApplication1.cpp" />
     <ClCompile Include="MFCApplication1Dlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -216,6 +221,7 @@
     <None Include="res\MFCApplication1.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\..\temp\cocos2d-x-4.0\build\bin\cpp-tests\Release\Resources\render_server.bmp" />
     <Image Include="..\..\cocos2d-x-4.0\build\bin\cpp-tests\Release\Resources\render_server.bmp" />
     <Image Include="res\bitmap2.bmp" />
     <Image Include="res\MFCApplication1.ico" />

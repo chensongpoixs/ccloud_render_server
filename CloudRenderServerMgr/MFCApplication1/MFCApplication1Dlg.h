@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <afxwin.h>
 #include "afxwin.h"
+#include "cmedia_rtc_server_mgr.h"
 
 //class Bitmap;
 // CMFCApplication1Dlg 对话框
@@ -42,4 +43,10 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRenderserverstart();
 	//afx_msg void OnEnChangelocalhost();
+	//afx_msg void OnStnClickedserverstatus();
+	afx_msg void OnBnClickedrtcserverstart();
+	//afx_msg void OnBnClickedRenderserverstart2();
+	afx_msg void OnBnClickedMediartcserverstart();
+private:
+	chen::cmedia_rtc_server_mgr		m_media_rtc_mgr;
 };
