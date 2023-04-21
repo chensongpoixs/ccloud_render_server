@@ -5,7 +5,7 @@
 
 				purpose:		ccfg
 ************************************************************************************************/
-#include "cmedia_rtc_server_mgr.h"
+#include "crender_server_mgr.h"
 #include "cutil.h"
 //#include "pch.h"
 //
@@ -17,61 +17,62 @@
 #pragma comment( lib, "ShLwApi.Lib" ) //PathRemoveFileSpecA
 #include <windows.h>
 #include "cinjector_util.h"
-
+#include "ccfg.h"
 #define ARRAY_SIZE (2048)
- namespace chen {
-	//cmedia_rtc_server_mgr g_media_rtc_server_mgr;
-
-	 
-	cmedia_rtc_server_mgr::~cmedia_rtc_server_mgr()
+namespace chen {
+	crender_server_mgr::~crender_server_mgr()
 	{
 	}
-	bool cmedia_rtc_server_mgr::update()
+
+	bool crender_server_mgr::update()
 	{
+		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, false, m_app_info.dwProcessId);
+		DWORD exitCode;
+		BOOL result = GetExitCodeProcess(hProcess, &exitCode);
+		if (result && exitCode == STILL_ACTIVE)
+		{
+			// 进程正在运行中
+			m_process_type = EProcessActive;
+		}
+		else if (::time(NULL) - m_timestamp < 3)
+		{
+			m_process_type = EProcessStart;
+		}
+		else
+		{
+			m_process_type = EProcessNone;
+			// 进程已经结束
+		}
 
-		 
-			HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, false,  m_app_info.dwProcessId);
-			DWORD exitCode;
-			BOOL result = GetExitCodeProcess(hProcess, &exitCode);
-			if (result && exitCode == STILL_ACTIVE)
-			{
-				// 进程正在运行中
-				m_process_type = EProcessActive;
-			}
-			else if (::time(NULL) - m_timestamp < 3)
-			{
-				m_process_type = EProcessStart;
-			}
-			else 
-			{
-				m_process_type = EProcessNone;
-				// 进程已经结束
-			}
+		CloseHandle(hProcess);
 
-			CloseHandle(hProcess);
-		 
 		//其中，PROCESS_ID为要获取状态的进程ID。通过调用OpenProcess函数打开进程句柄，然后调用GetExitCodeProcess函数获取进程退出码（即状态），如果返回值为TRUE且状态为STILL_ACTIVE，则进程正在运行中；否则进程已经结束。最后需要关闭进程句柄
 		return false;
 	}
-	bool cmedia_rtc_server_mgr::startup(const std::string& wan_ip, 
-		const std::string& media_wan_port, const std::string& media_min_port, 
-		const std::string&  media_max_port, const std::string& media_timeouts)
+
+	bool crender_server_mgr::startup(const std::string & render_wan_port, const std::string &media_wan_ip, const std::string & media_wan_port)
 	{
-		FILE * out_file_ptr = ::fopen("./media_server.cfg", "wb+");
-		CString str;
+		std::string app_path_name = "./RenderServer/render_server.exe";
+		//std::string app_path_name = "D:/Work/UE/builder_V4.2_Release_76_202304042038/builderexe/Rte.exe";
 		
+		FILE * out_file_ptr = ::fopen("./render_server.cfg", "wb+");
+		CString str;
+
 		std::string pp = CT2A(str.GetString());
-		fprintf(out_file_ptr, "# ^_^ ## \n websocket_wan_port = %s\n", media_wan_port.c_str());
-		fprintf(out_file_ptr, "rtc_wan_ip = %s\n", wan_ip.c_str());
-		fprintf(out_file_ptr, "rtc_min_port = %s\n", media_min_port.c_str());
-		fprintf(out_file_ptr, "rtc_max_port = %s\n", media_max_port.c_str());
-		fprintf(out_file_ptr, "stun_time_out = %s\n", media_timeouts.c_str());
+		fprintf(out_file_ptr, "# ^_^ ## \n wan_port = %s\n", render_wan_port.c_str());
+		fprintf(out_file_ptr, "gm_cmd_port = %u\n", g_cfg.get_uint32(ECI_GmCmdPort));
+		fprintf(out_file_ptr, "global_db_host = %s\n", g_cfg.get_string(ECI_GlobalDbHost).c_str());
+		fprintf(out_file_ptr, "global_db_user = %s\n", g_cfg.get_string(ECI_GlobalDbUsername).c_str());
+		fprintf(out_file_ptr, "global_db_psd = %s\n", g_cfg.get_string(ECI_GlobalDbPassword).c_str());
+		fprintf(out_file_ptr, "global_db_name = %s\n", g_cfg.get_string(ECI_GlobalDbName).c_str());
+		fprintf(out_file_ptr, "global_db_port = %s\n", g_cfg.get_string(ECI_GlobalDbPort));
+
+		fprintf(out_file_ptr, "rtc_ip = %s\n", media_wan_ip.c_str());
+		fprintf(out_file_ptr, "rtc_port = %s\n", media_wan_port.c_str());
 		fflush(out_file_ptr);
 		fclose(out_file_ptr);
 		out_file_ptr = NULL;
-		std::string app_path_name = "./media/media_rtc_server.exe";
-		//std::string app_path_name = "D:/Work/UE/builder_V4.2_Release_76_202304042038/builderexe/Rte.exe";
-		std::string app_path_param =   " ../../media_server.cfg  ../../log";
+		std::string app_path_param = " ../../render_server.cfg  ../../log";
 		std::string app_work_path = get_workdir(app_path_name);
 		/*{
 			STARTUPINFO si;
@@ -99,7 +100,7 @@
 			DESKTOP_SWITCHDESKTOP | GENERIC_WRITE;
 
 */
-		//system(app_path_name.c_str());
+//system(app_path_name.c_str());
 		CString commandLine(app_path_name.c_str());
 		CString path_work(app_path_param.c_str());
 		//ShellExecute(NULL, _T("open"), LPCWSTR(app_path_name.c_str()), NULL, NULL, SW_SHOW);
@@ -115,7 +116,7 @@
 		si.cbReserved2 = 0;
 		si.lpReserved2 = NULL;
 		GetStartupInfo(&si);
-		 
+
 		bool ret = ::CreateProcess(NULL, commandLine.GetBuffer(), NULL, NULL, FALSE, CREATE_NO_WINDOW/*CREATE_NO_WINDOW*/, NULL, NULL, &si, &m_app_info);
 		if (ret)
 		{
@@ -126,7 +127,7 @@
 			//// 获取子进程的退出码
 			//CloseHandle(pi.hThread);
 			//CloseHandle(pi.hProcess);
-			 	// TODO@chensong 2022-07-27  创建线程关闭  -----后期优化 
+				// TODO@chensong 2022-07-27  创建线程关闭  -----后期优化 
 			CloseHandle(m_app_info.hThread);
 			//m_app_info.hThread = NULL;
 			CloseHandle(m_app_info.hProcess);
@@ -138,12 +139,15 @@
 		}
 		return false;
 		return true;
+		return false;
 	}
-	void cmedia_rtc_server_mgr::destroy()
+
+	void crender_server_mgr::destroy()
 	{
 		close_app();
 	}
-	void cmedia_rtc_server_mgr::close_app()
+
+	void crender_server_mgr::close_app()
 	{
 		m_timestamp = 0;
 
@@ -156,18 +160,18 @@
 
 
 
-				WCHAR rtc_load_path[4096] = L""; 
-				GetCurrentDirectoryW(4096, rtc_load_path); 
-				wcscat_s(rtc_load_path, L"\\Tools\\"); 
-				wcscat_s(rtc_load_path, L"SendSignal.dll"); 
+				WCHAR rtc_load_path[4096] = L"";
+				GetCurrentDirectoryW(4096, rtc_load_path);
+				wcscat_s(rtc_load_path, L"\\Tools\\");
+				wcscat_s(rtc_load_path, L"SendSignal.dll");
 				if (GetFileAttributesW(rtc_load_path) == INVALID_FILE_ATTRIBUTES)
 				{
 					//WARNING_EX_LOG("Failed to find RenderServer\\runtime\\rtc.dll !!!");
-					return  ;
+					return;
 				}
 				cinjector_util::inject_library_full(m_app_info.dwProcessId, rtc_load_path);
-				 
-			 
+
+
 
 				//bool ret = AttachConsole(m_app_info.dwProcessId);
 				//bool ret = GenerateConsoleCtrlEvent(CTRL_C_EVENT, m_app_info.dwProcessId);
@@ -200,9 +204,11 @@
 		}
 
 	}
-	EProcessStateType cmedia_rtc_server_mgr::get_media_server_status()
+
+	EProcessStateType crender_server_mgr::get_render_server_status()
 	{
 		update();
 		return m_process_type;
 	}
- }
+
+}

@@ -57,6 +57,7 @@ END_MESSAGE_MAP()
 
 CMFCApplication1Dlg::CMFCApplication1Dlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFCAPPLICATION1_DIALOG, pParent)
+	 
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -74,16 +75,18 @@ BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMFCApplication1Dlg::OnBnClickedOk)
-	ON_BN_CLICKED(RenderServerStart, &CMFCApplication1Dlg::OnBnClickedRenderserverstart)
+	ON_BN_CLICKED(RenderServerStart, &CMFCApplication1Dlg::OnBnClickedCloudrenderstart)
 	//ON_EN_CHANGE(localhost, &CMFCApplication1Dlg::OnEnChangelocalhost)
 	//ON_STN_CLICKED(render_server_status, &CMFCApplication1Dlg::OnStnClickedserverstatus)
 	//ON_BN_CLICKED(media_rtc_server_start, &CMFCApplication1Dlg::OnBnClickedrtcserverstart)
 	//ON_BN_CLICKED(RenderServerStart2, &CMFCApplication1Dlg::OnBnClickedRenderserverstart2)
 	ON_BN_CLICKED(MediaRtcServerStart, &CMFCApplication1Dlg::OnBnClickedMediartcserverstart)
+	//ON_BN_CLICKED(CloudRenderStart, &CMFCApplication1Dlg::OnBnClickedCloudrenderstart)
 END_MESSAGE_MAP()
 
 // CMFCApplication1Dlg 消息处理程序
-
+  std::thread	 					m_thread;
+static bool							m_stoped = false;
 BOOL CMFCApplication1Dlg::OnInitDialog()
 {
 	//return TRUE;
@@ -137,7 +140,7 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	CWnd* pWnd = AfxGetMainWnd(); // 获取主窗口指针
-	pWnd->SetWindowText(_T("RenderServer")); // 设置窗口标题
+	pWnd->SetWindowText(_T("CloudRenderServerMgr")); // 设置窗口标题
 	 GetDlgItem(localhost_IP)->SetWindowText(_T("127.0.0.1"));
 	GetDlgItem(wan_address)->SetWindowText(_T("127.0.0.1"));
 	GetDlgItem(render_server_port)->SetWindowText(_T("9300"));
@@ -148,7 +151,41 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	GetDlgItem(max_port)->SetWindowText(_T("30000"));
 
 	GetDlgItem(rtc_time_out)->SetWindowText(_T("10000"));
-	GetDlgItem(render_server_status)->SetWindowText(_T("未启动")); 
+	GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("未启动"));
+	GetDlgItem(CloudRenderStart)->SetWindowText(_T("未启动"));
+
+
+
+
+	m_stoped = false;
+	/*if (m_thread.joinable())
+	{
+		m_thread.join();
+	}*/
+	/*std::thread([&] {
+		if (!m_stoped)
+		{
+
+			_work_ptread();
+		}
+	}).detach();*/
+	/*if (m_thread && m_thread->joinable())
+	{
+
+		m_thread->join();
+
+
+	}*/
+	/*delete m_thread;
+	m_thread = NULL;*/
+	if (!m_stoped)
+	{
+		std::thread 	ff(std::thread(&CMFCApplication1Dlg::_work_ptread, this));
+		m_thread.swap(ff);
+	}
+	// m_thread .swap( std::thread(&CMFCApplication1Dlg::_work_ptread, this)); 
+	 
+//	GetDlgItem(render_server_status)->SetWindowText(_T("未启动")); 
 	// TODO: 在此添加额外的初始化代码
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -157,6 +194,8 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 void CMFCApplication1Dlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	CDialogEx::OnSysCommand(nID, lParam);
+	
+	
 	/*if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
 		CAboutDlg dlgAbout;
@@ -247,6 +286,7 @@ void CMFCApplication1Dlg::OnBnClickedRenderserverstart()
 	fflush(out_file_ptr);*/
 	CString str;
 	GetDlgItem(localhost_IP)->GetWindowText(str);
+	GetDlgItem(wan_address)->GetWindowText(str);
 	std::string pp = CT2A(str.GetString());
 	/*fprintf(out_file_ptr, "[%s][%d][%s]\n", __FUNCTION__, __LINE__, pp.c_str());
 	fflush(out_file_ptr);*/
@@ -255,14 +295,14 @@ void CMFCApplication1Dlg::OnBnClickedRenderserverstart()
 	//将按钮修改为BS_OWNERDRAW风格，允许button采用自绘模式
 	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
 	//SendMessage( , WM_SETTEXT, 0, _T("")); // 将控件文本内容设置为空字符串
-	GetDlgItem(render_server_status)->SetWindowText(_T("启动..."));
+	//GetDlgItem(render_server_status)->SetWindowText(_T("启动..."));
 	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
 	//SetWindowText(GetDlgItem(render_server_status), _T(""));
 	//SetWindowText(GetDlgItem(render_server_status), _T(""));
 	//SetDlgItemText(render_server_status, _T(""), _T(""));
 	//GetDlgItem(RenderServerStart)->SetTextColor(RGB(255, 0, 0));
 	//GetDlgItem(render_server_status)->SetTextColor(RGB(255, 0, 0));
-	GetDlgItem(RenderServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
+	//GetDlgItem(RenderServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
 	//GetDlgItem(RenderServerStart)->ModifyStyle(0, BS_OWNERDRAW, 0);
 }
 
@@ -301,13 +341,127 @@ void CMFCApplication1Dlg::OnBnClickedrtcserverstart()
 void CMFCApplication1Dlg::OnBnClickedMediartcserverstart()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	m_media_rtc_mgr.startup();
-	GetDlgItem(media_rtc_server_status)->SetWindowText(_T("启动..."));
+	chen::EProcessStateType status_type = m_media_rtc_mgr.get_media_server_status();
+
+	if (status_type == chen::EProcessActive || status_type == chen::EProcessStart)
+	{
+		GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("停止中..."));
+		m_media_rtc_mgr.close_app();
+		return;
+	}
+	GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("启动中..."));
+
+	CString str;
+	//GetDlgItem(localhost_IP)->GetWindowText(str);
+	GetDlgItem(wan_address)->GetWindowText(str);
+	std::string wan_ip = CT2A(str.GetString());
+	GetDlgItem(signal_server_port)->GetWindowText(str);
+	std::string media_wan_port = CT2A(str.GetString());
+	GetDlgItem(min_port)->GetWindowText(str);
+	std::string media_min_port = CT2A(str.GetString());
+	GetDlgItem(max_port)->GetWindowText(str);
+	std::string media_max_port = CT2A(str.GetString());
+	GetDlgItem(rtc_time_out)->GetWindowText(str);
+	std::string media_timeouts = CT2A(str.GetString());
+	if (!m_media_rtc_mgr.startup(wan_ip, media_wan_port, media_min_port, media_max_port, media_timeouts))
+	{
+		GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("启动失败!!!"));
+		return;
+	}
+	
+	//GetDlgItem(media_rtc_server_status)->SetWindowText(_T("启动..."));
 	//GetDlgItem(render_server_status)->SetWindowText(_T(" "));
 	//SetWindowText(GetDlgItem(render_server_status), _T(""));
 	//SetWindowText(GetDlgItem(render_server_status), _T(""));
 	//SetDlgItemText(render_server_status, _T(""), _T(""));
 	//GetDlgItem(RenderServerStart)->SetTextColor(RGB(255, 0, 0));
 	//GetDlgItem(render_server_status)->SetTextColor(RGB(255, 0, 0));
-	GetDlgItem(MediaRtcServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
+	//GetDlgItem(MediaRtcServerStart)->SetWindowTextW(L"停止"); // 改变button上显示的文字
+}
+
+void CMFCApplication1Dlg::destroy()
+{
+	 
+		m_render_mgr.destroy();
+
+		m_media_rtc_mgr.destroy();
+		m_stoped = true;
+		if (m_thread.joinable())
+		{
+			m_thread.join();
+
+		}
+		 
+}
+
+void CMFCApplication1Dlg::_work_ptread()
+{
+	while (!m_stoped)
+	{
+		chen::EProcessStateType status_type = m_media_rtc_mgr.get_media_server_status();
+	
+		if (status_type == chen::EProcessActive)
+		{
+			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("停止"));
+		}
+		else if (status_type == chen::EProcessStart)
+		{
+			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("启动中..."));
+		}
+		else
+		{
+			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("未启动"));
+		}
+
+		 status_type = m_render_mgr.get_render_server_status();
+
+		if (status_type == chen::EProcessActive)
+		{
+			GetDlgItem(CloudRenderStart)->SetWindowText(_T("停止"));
+		}
+		else if (status_type == chen::EProcessStart)
+		{
+			GetDlgItem(CloudRenderStart)->SetWindowText(_T("启动中..."));
+		}
+		else
+		{
+			GetDlgItem(CloudRenderStart)->SetWindowText(_T("未启动"));
+		}
+	//	::Sleep(1);
+		 std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+}
+
+
+void CMFCApplication1Dlg::OnBnClickedCloudrenderstart()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	// TODO: 在此添加控件通知处理程序代码
+	chen::EProcessStateType status_type = m_render_mgr.get_render_server_status();
+
+	if (status_type == chen::EProcessActive || status_type == chen::EProcessStart)
+	{
+		GetDlgItem(CloudRenderStart)->SetWindowText(_T("停止中..."));
+		m_render_mgr.close_app();
+		return;
+	}
+
+	GetDlgItem(CloudRenderStart)->SetWindowText(_T("启动中..."));
+	
+	CString str;
+	 
+	GetDlgItem(render_server_port)->GetWindowText(str);
+	std::string render_wan_port = CT2A(str.GetString());
+
+	GetDlgItem(wan_address)->GetWindowText(str);
+	std::string media_wan_ip = CT2A(str.GetString());
+	GetDlgItem(signal_server_port)->GetWindowText(str);
+	std::string media_wan_port = CT2A(str.GetString());
+	
+	if (!m_render_mgr.startup(render_wan_port, media_wan_ip, media_wan_port))
+	{
+		GetDlgItem(CloudRenderStart)->SetWindowText(_T("启动失败!!!"));
+		return;
+	}
+
 }

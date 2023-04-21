@@ -183,3 +183,10 @@ test/src/com/chen/whindow/LabelEvent/ChessPieceClick.java
 CloudRenderServerMgr/.vs/
 CloudRenderServerMgr/vsout/ 
 CloudRenderServerMgr/MFCApplication1/log/ 
+CloudRenderServerMgr/MFCApplication1/Tools/
+CloudRenderServerMgr/MFCApplication1/RenderServer/
+CloudRenderServerMgr/MFCApplication1/render_server.cfg
+CloudRenderServerMgr/MFCApplication1/media_server.cfg
+CloudRenderServerMgr/MFCApplication1/CloudRenderServerMgr.cfg
+CloudRenderServerMgr/MFCApplication1/media/*
+server.cfg

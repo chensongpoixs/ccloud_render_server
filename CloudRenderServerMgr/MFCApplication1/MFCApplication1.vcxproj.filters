@@ -42,6 +42,57 @@
     <ClInclude Include="cutil.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cinjector_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="crender_server_mgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="casync_log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cconfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cdigit2str.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="clib_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="clog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="clog_color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="clog_define.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cnet_type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="crandom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="csingleton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ctime_api.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ctime_const.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ctime_elapse.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cnoncopyable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ccfg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication1.cpp">
@@ -57,6 +108,39 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="cutil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cinjector_util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="crender_server_mgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="casync_log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cconfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cdigit2str.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="clog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="clog_color.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cnet_type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="crandom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ctime_api.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ccfg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,7 +9,8 @@
 #include <afxwin.h>
 #include "afxwin.h"
 #include "cmedia_rtc_server_mgr.h"
-
+#include <thread>
+#include "crender_server_mgr.h"
 //class Bitmap;
 // CMFCApplication1Dlg 对话框
 class CMFCApplication1Dlg : public CDialogEx
@@ -47,6 +48,14 @@ public:
 	afx_msg void OnBnClickedrtcserverstart();
 	//afx_msg void OnBnClickedRenderserverstart2();
 	afx_msg void OnBnClickedMediartcserverstart();
+
+public:
+	void destroy();
+	void _work_ptread();
 private:
 	chen::cmedia_rtc_server_mgr		m_media_rtc_mgr;
+	chen::crender_server_mgr		m_render_mgr;
+	
+public:
+	afx_msg void OnBnClickedCloudrenderstart();
 };

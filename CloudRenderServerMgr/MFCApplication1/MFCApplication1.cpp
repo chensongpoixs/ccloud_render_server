@@ -11,7 +11,10 @@
 #define new DEBUG_NEW
 #endif
 
-
+#include "clog.h"
+#include "clog.h"
+#include "ccfg.h"
+#include <stdio.h>
 // CMFCApplication1App
 
 BEGIN_MESSAGE_MAP(CMFCApplication1App, CWinApp)
@@ -34,12 +37,40 @@ CMFCApplication1App::CMFCApplication1App()
 // 唯一的 CMFCApplication1App 对象
 
 CMFCApplication1App theApp;
-
-
+#include <iostream>
+using namespace chen;
 // CMFCApplication1App 初始化
-
+static void check_file(const char* file_name)
+{
+	//access
+	//if (::_access(file_name, 0) != 0)
+	{
+		FILE* fp = ::fopen(file_name, "r");
+		if (!fp)
+		{
+			FILE* fp = ::fopen(file_name, "wb+");
+		}
+		if (fp)
+		{
+			::fclose(fp);
+			fp = NULL;
+		}
+	}
+}
 BOOL CMFCApplication1App::InitInstance()
 {
+
+	
+	LOG::init("./log", "CloudRenderServerMgr");
+	const char * config_file = "./CloudRenderServerMgr.cfg";
+	check_file(config_file);
+	if (!g_cfg.init(config_file))
+	{
+		using namespace chen;
+		 ERROR_EX_LOG("not find CloudRenderServerMgr.cfg failed !!!");
+		LOG::destroy();
+	}
+
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
@@ -87,7 +118,10 @@ BOOL CMFCApplication1App::InitInstance()
 		TRACE(traceAppMsg, 0, "警告: 对话框创建失败，应用程序将意外终止。\n");
 		TRACE(traceAppMsg, 0, "警告: 如果您在对话框上使用 MFC 控件，则无法 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS。\n");
 	}
-
+	dlg.destroy();
+	g_cfg.destroy();
+	using namespace chen;
+	LOG::destroy();
 	// 删除上面创建的 shell 管理器。
 	if (pShellManager != nullptr)
 	{
