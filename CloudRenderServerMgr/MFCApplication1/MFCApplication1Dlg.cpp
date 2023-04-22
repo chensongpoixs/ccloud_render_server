@@ -10,7 +10,7 @@
 #include <string>
 #include <WinUser.h>
 
-
+const UINT WM_TRAYICON_NOTIFY_MESSAGE = RegisterWindowMessage(_T("WM_TRAYICON_NOTIFY_MESSAGE-{8DDBE93E-DFE8-4279-934E-05C39902F37D}"));
 #define _CRT_SECURE_NO_WARNINGS
 
 #ifdef _DEBUG
@@ -20,43 +20,69 @@
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
-class CAboutDlg : public CDialogEx
+//class CAboutDlg : public CDialogEx
+//{
+//public:
+//	CAboutDlg();
+//
+//// 对话框数据
+//#ifdef AFX_DESIGN_TIME
+//	enum { IDD = IDD_ABOUTBOX };
+//#endif
+//
+//	protected:
+//	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+//
+//// 实现
+//protected:
+//	DECLARE_MESSAGE_MAP()
+//};
+//
+//CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
+//{
+//}
+//
+//void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+//{
+//	CDialogEx::DoDataExchange(pDX);
+//}
+//
+//BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+//END_MESSAGE_MAP()
+
+class CAboutDlg : public CDialog
 {
 public:
 	CAboutDlg();
 
-// 对话框数据
-#ifdef AFX_DESIGN_TIME
+	// Dialog Data
 	enum { IDD = IDD_ABOUTBOX };
-#endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-// 实现
+														// Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
-
-
 // CMFCApplication1Dlg 对话框
 
 
 
 CMFCApplication1Dlg::CMFCApplication1Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCAPPLICATION1_DIALOG, pParent)
+	: CDialog(CMFCApplication1Dlg::IDD, pParent)
 	 
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -67,13 +93,14 @@ CMFCApplication1Dlg::CMFCApplication1Dlg(CWnd* pParent /*=nullptr*/)
 
 void CMFCApplication1Dlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_REGISTERED_MESSAGE(WM_TRAYICON_NOTIFY_MESSAGE, OnTrayMessage)
 	ON_BN_CLICKED(IDOK, &CMFCApplication1Dlg::OnBnClickedOk)
 	ON_BN_CLICKED(RenderServerStart, &CMFCApplication1Dlg::OnBnClickedCloudrenderstart)
 	//ON_EN_CHANGE(localhost, &CMFCApplication1Dlg::OnEnChangelocalhost)
@@ -81,6 +108,8 @@ BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialogEx)
 	//ON_BN_CLICKED(media_rtc_server_start, &CMFCApplication1Dlg::OnBnClickedrtcserverstart)
 	//ON_BN_CLICKED(RenderServerStart2, &CMFCApplication1Dlg::OnBnClickedRenderserverstart2)
 	ON_BN_CLICKED(MediaRtcServerStart, &CMFCApplication1Dlg::OnBnClickedMediartcserverstart)
+	//ON_MESSAGE(WM_TASKBAR_CREATED, OnTaskbarCreated)
+	//ON_NOTIFY(NIN_SELECT, 1, OnTrayIconClick)
 	//ON_BN_CLICKED(CloudRenderStart, &CMFCApplication1Dlg::OnBnClickedCloudrenderstart)
 END_MESSAGE_MAP()
 
@@ -90,7 +119,7 @@ static bool							m_stoped = false;
 BOOL CMFCApplication1Dlg::OnInitDialog()
 {
 	//return TRUE;
-	CDialogEx::OnInitDialog();
+	CDialog::OnInitDialog();
 
 	// 将“关于...”菜单项添加到系统菜单中。
 
@@ -130,7 +159,7 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	//m_brush.CreatePatternBrush(&m_bitmap);
 	
 	
-	SetBackgroundColor(RGB(255, 255, 255)); // 将白色设置为透明色
+	//SetBackgroundColor(RGB(255, 255, 255)); // 将白色设置为透明色
 
 
 
@@ -138,6 +167,19 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	NOTIFYICONDATA nData;
+	nData.cbSize = sizeof(NOTIFYICONDATA);
+	nData.hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
+	nData.hWnd = m_hWnd;
+	 nData.uCallbackMessage = WM_TRAYICON_NOTIFY_MESSAGE;
+	nData.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
+	nData.uID = 1;
+	_tcscpy_s(nData.szTip, 127, _T("CloudRenderSreverMgr"));
+	if (!Shell_NotifyIcon(NIM_ADD, &nData))
+	{
+		MessageBox(_T("Failed to set tray icon."), _T("CloudRenderServerMgr"), MB_ICONINFORMATION | MB_TOPMOST | MB_TASKMODAL);
+		throw false;
+	}
 
 	CWnd* pWnd = AfxGetMainWnd(); // 获取主窗口指针
 	pWnd->SetWindowText(_T("CloudRenderServerMgr")); // 设置窗口标题
@@ -155,7 +197,12 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	GetDlgItem(CloudRenderStart)->SetWindowText(_T("未启动"));
 
 
-
+	WINDOWPLACEMENT wp;
+	GetWindowPlacement(&wp);  //再次获取尺寸等信息，要不然会溢出(win10上崩溃)
+	wp.length = sizeof(WINDOWPLACEMENT);
+	wp.flags = WPF_RESTORETOMAXIMIZED;
+	wp.showCmd = SW_HIDE;
+	SetWindowPlacement(&wp);
 
 	m_stoped = false;
 	/*if (m_thread.joinable())
@@ -193,18 +240,18 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 
 void CMFCApplication1Dlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	CDialogEx::OnSysCommand(nID, lParam);
+	//CDialog::OnSysCommand(nID, lParam);
 	
 	
-	/*if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
 	}
 	else
 	{
-		CDialogEx::OnSysCommand(nID, lParam);
-	}*/
+		CDialog::OnSysCommand(nID, lParam);
+	}
 }
 
 // 如果向对话框添加最小化按钮，则需要下面的代码
@@ -257,7 +304,7 @@ void CMFCApplication1Dlg::OnPaint()
 			}
 	else
 	{
-		CDialogEx::OnPaint();
+		CDialog::OnPaint();
 	}
 
 
@@ -270,12 +317,59 @@ HCURSOR CMFCApplication1Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+#define MANAGE_DESKTOP_MENU_ID		500
+#define EXIT_MENU_ID				503
+LRESULT CMFCApplication1Dlg::OnTrayMessage(WPARAM wParam, LPARAM lParam)
+{
+	UINT uMsg = (UINT)lParam; 
+	if (uMsg == WM_RBUTTONDOWN || uMsg == WM_CONTEXTMENU /*|| WM_LBUTTONDOWN*/)
+	{
+		// 显示主窗口
+		/*ShowWindow(SW_RESTORE);*/
+		POINT pt;
+		GetCursorPos(&pt);
+
+		HMENU hContextMenu = CreatePopupMenu(); 
+		AppendMenu(hContextMenu, MF_ENABLED | MF_STRING, EXIT_MENU_ID, _T("&退出"));
+		SetForegroundWindow();
+
+		//Display the context menu.
+		int iSelectedIndex = TrackPopupMenu(hContextMenu, TPM_TOPALIGN | TPM_VERPOSANIMATION | TPM_RETURNCMD, pt.x, pt.y, 0, m_hWnd, NULL);
+		switch (iSelectedIndex)
+		{
+		case EXIT_MENU_ID:
+			 
+			PostQuitMessage(0);
+			break; 
+		default:
+			break;
+		}
+	}
+	else if (uMsg == WM_LBUTTONDOWN)
+	{
+		ShowWindow(SW_SHOW);
+	}
+	return LRESULT();
+}
+
+void CMFCApplication1Dlg::OnDestroy()
+{
+	CDialog::OnDestroy();
+	NOTIFYICONDATA nData;
+	nData.cbSize = sizeof(NOTIFYICONDATA);
+	nData.hWnd = m_hWnd;
+	nData.uID = 1;
+
+	if (!Shell_NotifyIcon(NIM_DELETE, &nData)) {}
+	 
+}
+
 
 
 void CMFCApplication1Dlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialogEx::OnOK();
+	CDialog::OnOK();
 }
 #define  _CRT_SECURE_NO_WARNINGS
 //static FILE  * out_file_ptr = ::fopen("./mfc.log", "wb+");

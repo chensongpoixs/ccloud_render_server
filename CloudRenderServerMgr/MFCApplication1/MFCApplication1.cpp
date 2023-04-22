@@ -25,6 +25,7 @@ END_MESSAGE_MAP()
 // CMFCApplication1App 构造
 
 CMFCApplication1App::CMFCApplication1App()
+	: m_application_wnd(NULL)
 {
 	// 支持重新启动管理器
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -83,13 +84,13 @@ BOOL CMFCApplication1App::InitInstance()
 
 	CWinApp::InitInstance();
 
-
+	AfxEnableControlContainer();
 	// 创建 shell 管理器，以防对话框包含
 	// 任何 shell 树视图控件或 shell 列表视图控件。
-	CShellManager *pShellManager = new CShellManager;
+	//CShellManager *pShellManager = new CShellManager;
 
-	// 激活“Windows Native”视觉管理器，以便在 MFC 控件中启用主题
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+	//// 激活“Windows Native”视觉管理器，以便在 MFC 控件中启用主题
+	//CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
 	// 标准初始化
 	// 如果未使用这些功能并希望减小
@@ -98,8 +99,33 @@ BOOL CMFCApplication1App::InitInstance()
 	// 更改用于存储设置的注册表项
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
-	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
+	SetRegistryKey(_T("@CloudRenderServerMgr"));
 
+	bool AlreadyRunning = false;
+
+	Sleep(1000);
+	HANDLE hMutexOneInstance = ::CreateMutex(NULL, FALSE, _T("CloudRenderServerMgr_{44D28BCA-7F46-4af2-A1FF-36EE0DAC7CD2}"));
+
+	AlreadyRunning = (::GetLastError() == ERROR_ALREADY_EXISTS ||
+		::GetLastError() == ERROR_ACCESS_DENIED);
+
+	if (AlreadyRunning)
+	{
+		MessageBox(NULL, _T("One instance of this aplication is already running."), _T("CloudRenderServerMgr"), 0);
+		/*g_cfg.destroy();
+		using namespace chen;
+		LOG::destroy();*/
+		return FALSE;
+	}
+
+	m_application_wnd = new CMFCApplication1Dlg();
+	m_pMainWnd = m_application_wnd;
+	m_application_wnd->Create(IDD_MFCAPPLICATION1_DIALOG);
+	
+	ShowWindow(m_pMainWnd->GetSafeHwnd(), SW_SHOW);
+
+
+	return TRUE;
 	CMFCApplication1Dlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
@@ -123,10 +149,10 @@ BOOL CMFCApplication1App::InitInstance()
 	using namespace chen;
 	LOG::destroy();
 	// 删除上面创建的 shell 管理器。
-	if (pShellManager != nullptr)
+	/*if (pShellManager != nullptr)
 	{
 		delete pShellManager;
-	}
+	}*/
 
 #if !defined(_AFXDLL) && !defined(_AFX_NO_MFC_CONTROLS_IN_DIALOGS)
 	ControlBarCleanUp();
@@ -135,5 +161,20 @@ BOOL CMFCApplication1App::InitInstance()
 	// 由于对话框已关闭，所以将返回 FALSE 以便退出应用程序，
 	//  而不是启动应用程序的消息泵。
 	return FALSE;
+}
+
+int CMFCApplication1App::ExitInstance()
+{
+	if(m_application_wnd)
+	{
+		m_application_wnd->destroy();
+		m_application_wnd->DestroyWindow();
+		
+	}
+	g_cfg.destroy();
+	using namespace chen;
+	LOG::destroy();
+	m_application_wnd = NULL;
+	return  CWinApp::ExitInstance();
 }
 

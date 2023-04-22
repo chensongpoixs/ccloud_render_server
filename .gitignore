@@ -190,3 +190,9 @@ CloudRenderServerMgr/MFCApplication1/media_server.cfg
 CloudRenderServerMgr/MFCApplication1/CloudRenderServerMgr.cfg
 CloudRenderServerMgr/MFCApplication1/media/*
 server.cfg
+CloudRenderServerMgr/x64/Debug/CloudRenderMediaMgr.exe
+CloudRenderServerMgr/CloudRenderServerMgr.VC.db
+CloudRenderServerMgr/CloudRenderServerMgr.VC.VC.opendb
+CloudRenderServerMgr/x64/Debug/CloudRenderMediaMgr.ilk
+CloudRenderServerMgr/x64/Debug/CloudRenderMediaMgr.pdb
+CloudRenderServerMgr/MFCApplication1/RDa25760

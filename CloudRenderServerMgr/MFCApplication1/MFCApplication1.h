@@ -11,6 +11,8 @@
 #include "resource.h"		// 主符号
 
 
+class CMFCApplication1Dlg;
+
 // CMFCApplication1App:
 // 有关此类的实现，请参阅 MFCApplication1.cpp
 //
@@ -23,10 +25,13 @@ public:
 // 重写
 public:
 	virtual BOOL InitInstance();
-
+	virtual int ExitInstance();
 // 实现
 
 	DECLARE_MESSAGE_MAP()
+
+private:
+	CMFCApplication1Dlg * m_application_wnd;
 };
 
 extern CMFCApplication1App theApp;

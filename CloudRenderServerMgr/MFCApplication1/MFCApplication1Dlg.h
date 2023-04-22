@@ -13,16 +13,17 @@
 #include "crender_server_mgr.h"
 //class Bitmap;
 // CMFCApplication1Dlg 对话框
-class CMFCApplication1Dlg : public CDialogEx
+class CMFCApplication1Dlg : public CDialog
 {
 // 构造
 public:
+	//CMFCApplication1Dlg();
 	CMFCApplication1Dlg(CWnd* pParent = nullptr);	// 标准构造函数
 
 // 对话框数据
-#ifdef AFX_DESIGN_TIME
+//#ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MFCAPPLICATION1_DIALOG };
-#endif
+//#endif
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
@@ -40,7 +41,15 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
 public:
+	LRESULT OnTrayMessage(WPARAM wParam, LPARAM lParam);
+
+	 
+	afx_msg void OnDestroy();
+	 
+public:
+
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRenderserverstart();
 	//afx_msg void OnEnChangelocalhost();
