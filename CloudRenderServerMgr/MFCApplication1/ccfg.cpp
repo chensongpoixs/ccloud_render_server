@@ -66,7 +66,8 @@ namespace chen {
 		set_string(ECI_GlobalDbPassword, "global_db_psd", "");
 		set_string(ECI_GlobalDbName, "global_db_name", "global_table");
 		set_uint32(ECI_GlobalDbPort, "global_db_port", 3306);
-
+		set_uint32(ECI_MediaServerShow, "media_server_show", 0);
+		set_uint32(ECI_RenderServerShow, "render_server_show", 0);
 		//配置表的值
 		load_cfg_file();
 

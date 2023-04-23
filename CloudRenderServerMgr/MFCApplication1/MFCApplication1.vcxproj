@@ -246,6 +246,7 @@
     <ResourceCompile Include="MFCApplication1.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CloudRenderServerMgr.cfg" />
     <None Include="res\MFCApplication1.rc2" />
   </ItemGroup>
   <ItemGroup>

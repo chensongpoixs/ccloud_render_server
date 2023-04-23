@@ -50,7 +50,8 @@ namespace chen {
 		ECI_GlobalDbName,
 		ECI_GlobalDbUsername,
 		ECI_GlobalDbPassword,
-		 
+		 ECI_MediaServerShow,
+		 ECI_RenderServerShow,
 		ECI_Max,
 	};
 	class ccfg : public cconfig

@@ -34,7 +34,8 @@
 #pragma comment( lib, "ShLwApi.Lib" ) //PathRemoveFileSpecA
 #include <windows.h>
 #include "cinjector_util.h"
-
+#include "clog.h"
+#include "ccfg.h"
 #define ARRAY_SIZE (2048)
  namespace chen {
 	//cmedia_rtc_server_mgr g_media_rtc_server_mgr;
@@ -132,8 +133,12 @@
 		si.cbReserved2 = 0;
 		si.lpReserved2 = NULL;
 		GetStartupInfo(&si);
-		 
-		bool ret = ::CreateProcess(NULL, commandLine.GetBuffer(), NULL, NULL, FALSE, CREATE_NO_WINDOW/*CREATE_NO_WINDOW*/, NULL, NULL, &si, &m_app_info);
+		DWORD window_show = CREATE_NO_WINDOW;
+		if (g_cfg.get_uint32(ECI_MediaServerShow))
+		{
+			window_show = HIGH_PRIORITY_CLASS;
+		}
+		bool ret = ::CreateProcess(NULL, commandLine.GetBuffer(), NULL, NULL, FALSE, window_show/*CREATE_NO_WINDOW*/, NULL, NULL, &si, &m_app_info);
 		if (ret)
 		{
 			// 关闭子进程的主线程句柄        
