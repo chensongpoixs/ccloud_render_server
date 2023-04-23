@@ -33,7 +33,7 @@
 #include "afxdialogex.h"
 #include <string>
 #include <WinUser.h>
-
+#include "clog.h"
 const UINT WM_TRAYICON_NOTIFY_MESSAGE = RegisterWindowMessage(_T("WM_TRAYICON_NOTIFY_MESSAGE-{8DDBE93E-DFE8-4279-934E-05C39902F37D}"));
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -506,17 +506,19 @@ void CMFCApplication1Dlg::OnBnClickedMediartcserverstart()
 
 void CMFCApplication1Dlg::destroy()
 {
-	 
+	using namespace chen;
+		SYSTEM_LOG("render server exit ...");
 		m_render_mgr.destroy();
-
+		SYSTEM_LOG("media rtc  server exit ...");
 		m_media_rtc_mgr.destroy();
 		m_stoped = true;
-		if (m_thread.joinable())
+		SYSTEM_LOG(" app thread   exit ...");
+		/*if (m_thread.joinable())
 		{
 			m_thread.join();
 
-		}
-		 
+		}*/
+		SYSTEM_LOG(" app thread   exit OK !!!");
 }
 
 void CMFCApplication1Dlg::_work_ptread()
@@ -529,32 +531,33 @@ void CMFCApplication1Dlg::_work_ptread()
 		{
 			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("停止"));
 		}
-		else if (status_type == chen::EProcessStart)
+		else if (!m_stoped &&status_type == chen::EProcessStart)
 		{
 			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("启动中..."));
 		}
-		else
+		else if (!m_stoped  )
 		{
 			GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("未启动"));
 		}
 
 		 status_type = m_render_mgr.get_render_server_status();
 
-		if (status_type == chen::EProcessActive)
+		if (!m_stoped &&status_type == chen::EProcessActive)
 		{
 			GetDlgItem(CloudRenderStart)->SetWindowText(_T("停止"));
 		}
-		else if (status_type == chen::EProcessStart)
+		else if (!m_stoped &&status_type == chen::EProcessStart)
 		{
 			GetDlgItem(CloudRenderStart)->SetWindowText(_T("启动中..."));
 		}
-		else
+		else if (!m_stoped )
 		{
 			GetDlgItem(CloudRenderStart)->SetWindowText(_T("未启动"));
 		}
 	//	::Sleep(1);
 		 std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
+	m_thread.join();
 }
 
 

@@ -202,10 +202,12 @@ int CMFCApplication1App::ExitInstance()
 {
 	if(m_application_wnd)
 	{
+		SYSTEM_LOG("app destroy ...");
 		m_application_wnd->destroy();
 		m_application_wnd->DestroyWindow();
 		
 	}
+	SYSTEM_LOG("Exit gconfig ..");
 	g_cfg.destroy();
 	using namespace chen;
 	LOG::destroy();
