@@ -145,7 +145,7 @@ BOOL CMFCApplication1App::InitInstance()
 
 	if (AlreadyRunning)
 	{
-		MessageBox(NULL, _T("One instance of this aplication is already running."), _T("CloudRenderServerMgr"), 0);
+		MessageBox(NULL, _T("云渲染程序管理已经启动！！！"), _T("CloudRenderServerMgr"), 0);
 		/*g_cfg.destroy();
 		using namespace chen;
 		LOG::destroy();*/
