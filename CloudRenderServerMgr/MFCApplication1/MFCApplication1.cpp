@@ -83,7 +83,13 @@ BOOL CMFCApplication1App::InitInstance()
 
 	CWinApp::InitInstance();
 
+	// 创建一个不可见的主窗口
+	//CWnd* pWnd = new CWnd;
+	//pWnd.CreateEx(0, AfxRegisterWndClass(0), _T("MyHiddenWindow"), 0, 0, 0, 0, NULL, 0);
 
+	// 将主窗口设置为不可见
+	//m_pMainWnd = pWnd;
+	//m_pMainWnd->ShowWindow(SW_HIDE);
 	// 创建 shell 管理器，以防对话框包含
 	// 任何 shell 树视图控件或 shell 列表视图控件。
 	CShellManager *pShellManager = new CShellManager;
