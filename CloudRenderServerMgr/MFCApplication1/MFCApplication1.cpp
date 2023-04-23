@@ -153,6 +153,7 @@ BOOL CMFCApplication1App::InitInstance()
 	}
 
 	m_application_wnd = new CMFCApplication1Dlg();
+	//m_application_wnd->SetBackgroundColor(RGB(255, 255, 255));;
 	m_pMainWnd = m_application_wnd;
 	m_application_wnd->Create(IDD_MFCAPPLICATION1_DIALOG);
 	

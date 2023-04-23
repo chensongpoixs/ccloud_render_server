@@ -171,5 +171,8 @@
     <Image Include="..\..\..\..\..\temp\cocos2d-x-4.0\build\bin\cpp-tests\Release\Resources\render_server.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

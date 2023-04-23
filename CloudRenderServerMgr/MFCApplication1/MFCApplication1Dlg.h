@@ -85,4 +85,5 @@ private:
 	
 public:
 	afx_msg void OnBnClickedCloudrenderstart();
+	afx_msg void OnStnClickedBitmap1();
 };

@@ -252,6 +252,7 @@
   <ItemGroup>
     <Image Include="..\..\..\..\..\temp\cocos2d-x-4.0\build\bin\cpp-tests\Release\Resources\render_server.bmp" />
     <Image Include="..\..\cocos2d-x-4.0\build\bin\cpp-tests\Release\Resources\render_server.bmp" />
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\bitmap2.bmp" />
     <Image Include="res\MFCApplication1.ico" />
     <Image Include="res\render_server.bmp" />

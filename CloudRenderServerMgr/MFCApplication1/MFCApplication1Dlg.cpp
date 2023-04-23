@@ -135,6 +135,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialog)
 	//ON_MESSAGE(WM_TASKBAR_CREATED, OnTaskbarCreated)
 	//ON_NOTIFY(NIN_SELECT, 1, OnTrayIconClick)
 	//ON_BN_CLICKED(CloudRenderStart, &CMFCApplication1Dlg::OnBnClickedCloudrenderstart)
+	ON_STN_CLICKED(IDB_BITMAP1, &CMFCApplication1Dlg::OnStnClickedBitmap1)
 END_MESSAGE_MAP()
 
 // CMFCApplication1Dlg 消息处理程序
@@ -183,7 +184,7 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	//m_brush.CreatePatternBrush(&m_bitmap);
 	
 	
-	//SetBackgroundColor(RGB(255, 255, 255)); // 将白色设置为透明色
+	 // 将白色设置为透明色
 
 
 
@@ -191,6 +192,7 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	
 	NOTIFYICONDATA nData;
 	nData.cbSize = sizeof(NOTIFYICONDATA);
 	nData.hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
@@ -227,7 +229,11 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	wp.flags = WPF_RESTORETOMAXIMIZED;
 	wp.showCmd = SW_HIDE;
 	SetWindowPlacement(&wp);
+	CRect rect;
 
+	/*GetDlgItem(IDC_STATIC)->GetWindowRect(&rect);
+	ScreenToClient(&rect);
+	GetDlgItem(IDC_STATIC)->MoveWindow(rect.left, rect.top, 250, 250, true);*/
 	m_stoped = false;
 	/*if (m_thread.joinable())
 	{
@@ -469,6 +475,7 @@ void CMFCApplication1Dlg::OnBnClickedMediartcserverstart()
 	}
 	GetDlgItem(MediaRtcServerStart)->SetWindowText(_T("启动中..."));
 
+	
 	CString str;
 	//GetDlgItem(localhost_IP)->GetWindowText(str);
 	GetDlgItem(wan_address)->GetWindowText(str);
@@ -582,4 +589,10 @@ void CMFCApplication1Dlg::OnBnClickedCloudrenderstart()
 		return;
 	}
 
+}
+
+
+void CMFCApplication1Dlg::OnStnClickedBitmap1()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }
