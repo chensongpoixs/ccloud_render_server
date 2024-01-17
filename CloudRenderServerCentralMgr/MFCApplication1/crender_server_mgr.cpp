@@ -34,6 +34,7 @@
 #include <windows.h>
 #include "cinjector_util.h"
 #include "ccfg.h"
+#include "MFCApplication1.h"
 #define ARRAY_SIZE (2048)
 namespace chen {
 	crender_server_mgr::~crender_server_mgr()
@@ -76,13 +77,34 @@ namespace chen {
 
 		std::string pp = CT2A(str.GetString());
 		fprintf(out_file_ptr, "# ^_^ ## \nwan_port = %s\n", render_wan_port.c_str());
-		fprintf(out_file_ptr, "render_server_index = %s\n", render_server_id.c_str());
+		fprintf(out_file_ptr, "render_server_name = %s\n", g_render_server_name.c_str());
 		fprintf(out_file_ptr, "central_ip = %s\n", centreal_ip.c_str());
 		fprintf(out_file_ptr, "central_port = %s\n", centreal_port.c_str());
+		//fprintf(out_file_ptr, "virtual_desktop=0\n" );
 		 
+
+
+
+
 		fflush(out_file_ptr);
 		fclose(out_file_ptr);
 		out_file_ptr = NULL;
+
+
+		{
+			FILE* out_file = ::fopen("./CloudRenderServerMgr.cfg", "wb+");
+			if (out_file)
+			{
+				fprintf(out_file, "# ^_^ ## \nwan_port = %s\n", render_wan_port.c_str());
+				fprintf(out_file, "render_server_name = %s\n", g_render_server_name.c_str());
+				fprintf(out_file, "central_ip = %s\n", centreal_ip.c_str());
+				fprintf(out_file, "central_port = %s\n", centreal_port.c_str());
+				fflush(out_file);
+				fclose(out_file);
+				out_file = NULL;
+			}
+		}
+
 		std::string app_path_param = " ../../render_server.cfg  ../../log";
 		std::string app_work_path = get_workdir(app_path_name);
 		/*{

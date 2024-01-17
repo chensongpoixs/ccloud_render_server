@@ -23,21 +23,21 @@
     <ProjectGuid>{35300D47-2CC3-44AA-B947-02437845F8AA}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>MFCApplication1</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>CloudRenderServerMgr</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -45,14 +45,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -206,6 +206,7 @@
     <ClInclude Include="cnoncopyable.h" />
     <ClInclude Include="cprocess_define.h" />
     <ClInclude Include="crandom.h" />
+    <ClInclude Include="cregistry.h" />
     <ClInclude Include="crender_server_mgr.h" />
     <ClInclude Include="csingleton.h" />
     <ClInclude Include="ctime_api.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="cmedia_rtc_server_mgr.cpp" />
     <ClCompile Include="cnet_type.cpp" />
     <ClCompile Include="crandom.cpp" />
+    <ClCompile Include="cregistry.cpp" />
     <ClCompile Include="crender_server_mgr.cpp" />
     <ClCompile Include="ctime_api.cpp" />
     <ClCompile Include="cutil.cpp" />

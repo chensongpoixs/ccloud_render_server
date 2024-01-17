@@ -28,7 +28,7 @@
 #endif
 
 #include "resource.h"		// 主符号
-
+#include <string>
 
 class CMFCApplication1Dlg;
 
@@ -52,5 +52,7 @@ public:
 private:
 	CMFCApplication1Dlg * m_application_wnd;
 };
+
+extern std::string g_render_server_name;
 
 extern CMFCApplication1App theApp;

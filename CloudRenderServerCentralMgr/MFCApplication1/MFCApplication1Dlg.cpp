@@ -33,6 +33,7 @@
 #include "afxdialogex.h"
 #include <string>
 #include <WinUser.h>
+#include "ccfg.h"
 #include "clog.h"
 const UINT WM_TRAYICON_NOTIFY_MESSAGE = RegisterWindowMessage(_T("WM_TRAYICON_NOTIFY_MESSAGE-{8DDBE93E-DFE8-4279-934E-05C39902F37D}"));
 #define _CRT_SECURE_NO_WARNINGS
@@ -210,12 +211,52 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 
 	CWnd* pWnd = AfxGetMainWnd(); // 获取主窗口指针
 	pWnd->SetWindowText(_T("CloudRenderServerMgr")); // 设置窗口标题
-	 GetDlgItem(localhost_IP)->SetWindowText(_T("0"));
-	 GetDlgItem(render_server_port)->SetWindowText(_T("9300"));
 
-	GetDlgItem(wan_address)->SetWindowText(_T("127.0.0.1"));
-	GetDlgItem(signal_server_port)->SetWindowText(_T("9500"));
+	/*
+	
+	wchar_t * char2wchar(const char* cchar) 
+{     
+    wchar_t *m_wchar;    
+    int len = MultiByteToWideChar( CP_ACP, 0, cchar, strlen(cchar), NULL, 0);     
+    m_wchar= new wchar_t[len+1];     
+    MultiByteToWideChar( CP_ACP, 0, cchar, strlen( cchar), m_wchar, len);     
+    m_wchar[len]= '\0' ;    
+    return m_wchar; 
+} 
+ 
+	*/
 
+	 
+
+	// GetDlgItem(localhost_IP)->SetWindowText(_T("0"));
+	{
+		std::string wan_port = std::to_string(chen::g_cfg.get_uint32(chen::ECI_WanPort));
+		int len = MultiByteToWideChar(CP_ACP, 0, wan_port.c_str(), wan_port.length(), NULL, 0);
+		std::wstring wwan_port;
+		wwan_port.resize(len);
+		MultiByteToWideChar(CP_ACP, 0, wan_port.c_str(), wan_port.length(), (LPWSTR)wwan_port.data(), len);
+		GetDlgItem(render_server_port)->SetWindowText(wwan_port.c_str());
+		
+		
+	}
+	{
+		std::string central_ip =  chen::g_cfg.get_string(chen::ECI_CentralIp);
+
+		int len = MultiByteToWideChar(CP_ACP, 0, central_ip.c_str(), central_ip.length(), NULL, 0);
+		std::wstring wcentral_ip;
+		wcentral_ip.resize(len);
+		MultiByteToWideChar(CP_ACP, 0,  central_ip.c_str(),  central_ip.length(), (LPWSTR)wcentral_ip.data(), len);
+		GetDlgItem(wan_address)->SetWindowText(wcentral_ip.c_str());
+	}
+	{
+		std::string central_port = std::to_string(chen::g_cfg.get_uint32(chen::ECI_CentralPort));
+		int len = MultiByteToWideChar(CP_ACP, 0, central_port.c_str(), central_port.length(), NULL, 0);
+		std::wstring wcentral_port;
+		wcentral_port.resize(len);
+		MultiByteToWideChar(CP_ACP, 0,  central_port.c_str(),  central_port.length(), (LPWSTR)wcentral_port.data(), len);
+		GetDlgItem(signal_server_port)->SetWindowText(wcentral_port.c_str());
+
+	}
 	//GetDlgItem(min_port)->SetWindowText(_T("20000"));
 	//GetDlgItem(max_port)->SetWindowText(_T("30000"));
 
@@ -410,7 +451,7 @@ void CMFCApplication1Dlg::OnBnClickedRenderserverstart()
 	/*fprintf(out_file_ptr, "[%s][%d]\n", __FUNCTION__, __LINE__);
 	fflush(out_file_ptr);*/
 	CString str;
-	GetDlgItem(localhost_IP)->GetWindowText(str);
+	//GetDlgItem(localhost_IP)->GetWindowText(str);
 	GetDlgItem(wan_address)->GetWindowText(str);
 	std::string pp = CT2A(str.GetString());
 	/*fprintf(out_file_ptr, "[%s][%d][%s]\n", __FUNCTION__, __LINE__, pp.c_str());
@@ -514,11 +555,11 @@ void CMFCApplication1Dlg::destroy()
 		//m_media_rtc_mgr.destroy();
 		m_stoped = true;
 		SYSTEM_LOG(" app thread   exit ...");
-		/*if (m_thread.joinable())
+		if (m_thread.joinable())
 		{
 			m_thread.join();
 
-		}*/
+		}
 		SYSTEM_LOG(" app thread   exit OK !!!");
 }
 
@@ -549,7 +590,7 @@ void CMFCApplication1Dlg::_work_ptread()
 	//	::Sleep(1);
 		 std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
-	m_thread.join();
+	//m_thread.join();
 }
 
 
@@ -572,7 +613,7 @@ void CMFCApplication1Dlg::OnBnClickedCloudrenderstart()
 	 
 
 	CString str;
-	GetDlgItem(localhost_IP)->GetWindowText(str);
+	//GetDlgItem(localhost_IP)->GetWindowText(str);
 	std::string render_server_id = CT2A(str.GetString());
 	GetDlgItem(render_server_port)->GetWindowText(str);
 	std::string render_wan_port = CT2A(str.GetString());

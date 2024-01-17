@@ -28,6 +28,19 @@
 #include <string>
 namespace chen {
 	std::string get_workdir(const std::string & path);
+	namespace cutil
+	{
+		template<typename T>
+		void rand_bytes(unsigned char* buf, int num, T& rand_func)
+		{
+			for (int i = 0; i < num; ++i)
+			{
+				buf[i] = rand_func() & 0xFF;
+			}
+		}
+		std::string get_hex_str(const void* buf, int num);
+
+	}
 }
 #endif //_C_UTIL_H_
 

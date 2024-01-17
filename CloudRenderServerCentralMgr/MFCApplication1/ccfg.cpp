@@ -57,17 +57,16 @@ namespace chen {
 
 		 
 
-		set_string(ECI_GmCmdIp, "gm_cmd_ip", "0.0.0.0");
-		set_uint32(ECI_GmCmdPort, "gm_cmd_port", 9800);
-
-
-		set_string(ECI_GlobalDbHost, "global_db_host", "127.0.0.1");
-		set_string(ECI_GlobalDbUsername, "global_db_user", "root");
-		set_string(ECI_GlobalDbPassword, "global_db_psd", "");
-		set_string(ECI_GlobalDbName, "global_db_name", "global_table");
-		set_uint32(ECI_GlobalDbPort, "global_db_port", 3306);
+	 
 		set_uint32(ECI_MediaServerShow, "media_server_show", 0);
 		set_uint32(ECI_RenderServerShow, "render_server_show", 0);
+		set_string(ECI_AppSystemRegedit, "app_system_regedit", "Software\\MyCompany\\AppCloudRender");
+		set_string(ECI_AppSystemRegeditValue, "app_system_regedit_value", "render_name");
+		set_string(ECI_RenderServerName, "render_server_name", "");
+		set_string(ECI_CentralIp, "central_ip", "127.0.0.1");
+		set_uint32(ECI_CentralPort, "central_port", 9500);
+		set_uint32(ECI_WanPort, "wan_port", 6300);
+		 
 		//配置表的值
 		load_cfg_file();
 

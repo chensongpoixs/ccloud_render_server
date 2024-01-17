@@ -34,12 +34,18 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+#include "cregistry.h"
 #include "clog.h"
 #include "clog.h"
 #include "ccfg.h"
 #include <stdio.h>
+#include "crandom.h"
+#include "cutil.h"
+#include "clib_util.h"
 // CMFCApplication1App
+
+
+std::string g_render_server_name;
 
 BEGIN_MESSAGE_MAP(CMFCApplication1App, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
@@ -82,6 +88,82 @@ static void check_file(const char* file_name)
 		}
 	}
 }
+
+bool create_virtual_desktop(const std::string& desktop_name, PROCESS_INFORMATION& pinfo)
+{
+#define ARRAY_SIZE  (2048 * 10)
+	if (desktop_name.size() < 1)
+	{
+		WARNING_EX_LOG("create desktop  [desktop_name= %s] failed !!!", desktop_name.c_str());
+		return false;
+	}
+	//GetCurrentThreadId();
+	HDESK hDesk = OpenDesktop(LPCWSTR(desktop_name.c_str()), DF_ALLOWOTHERACCOUNTHOOK, TRUE, GENERIC_ALL);
+	pinfo = { 0 };
+	if (!hDesk)
+	{
+		SECURITY_ATTRIBUTES sAttribute = { sizeof(SECURITY_ATTRIBUTES), NULL, TRUE };
+		hDesk = ::CreateDesktop(LPCWSTR(desktop_name.c_str()), NULL, NULL, DF_ALLOWOTHERACCOUNTHOOK, GENERIC_ALL, &sAttribute);
+		if (!hDesk)
+		{
+			ERROR_EX_LOG("create desktop failed !!!");
+			return false;
+		}
+
+		//TODO@chensong 20220723   virtual desktop  mouse keydown 
+		TCHAR szExplorerFile[ARRAY_SIZE] = { 0 };
+
+		GetWindowsDirectory(szExplorerFile, ARRAY_SIZE - 1);
+		_tcscat_s(szExplorerFile, ARRAY_SIZE - 1, _T("\\Explorer.Exe"));
+
+
+		TCHAR szDirectoryName[ARRAY_SIZE] = { 0 };
+		//TCHAR szExplorerFile[ARRAY_SIZE] = { 0 };
+
+		_tcscpy_s(szDirectoryName, _tcslen(szExplorerFile) + 1, szExplorerFile);
+
+		//PathIsExe(szExplorerFile);
+
+
+		PathRemoveFileSpec(szDirectoryName);
+
+		STARTUPINFO sInfo = { 0 };
+		//PROCESS_INFORMATION pInfo = { 0 };
+		GetStartupInfo(&sInfo);
+		sInfo.cb = sizeof(sInfo);
+		sInfo.lpDesktop = (LPWSTR)desktop_name.c_str();;
+
+		//Lanuching a application into dekstop
+		BOOL bCreateProcessReturn = CreateProcess(szExplorerFile,
+			NULL,
+			NULL,
+			NULL,
+			TRUE,
+			NORMAL_PRIORITY_CLASS,
+			NULL,
+			szDirectoryName,
+			&sInfo,
+			&pinfo);
+		if (bCreateProcessReturn)
+		{
+			CloseHandle(pinfo.hThread);
+			pinfo.hThread = NULL;
+			CloseHandle(pinfo.hProcess);
+			pinfo.hProcess = NULL;
+		}
+		/*TCHAR *pszError = NULL;
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, GetLastError(), 0, (LPWSTR)&pszError, 0, NULL);
+		OutputDebugString(_T("\n\t\t"));
+		OutputDebugString(pszError);*/
+	}
+	// TODO@chensong 2022-12-26  清理 virtual desktop 资源
+	if (hDesk)
+	{
+		CloseDesktop(hDesk);
+		hDesk = NULL;
+	}
+	return true;
+}
 BOOL CMFCApplication1App::InitInstance()
 {
 
@@ -95,6 +177,40 @@ BOOL CMFCApplication1App::InitInstance()
 		 ERROR_EX_LOG("not find CloudRenderServerMgr.cfg failed !!!");
 		LOG::destroy();
 	}
+	 
+	//if (!chen::readfromregistry(g_cfg.get_string(ECI_AppSystemRegedit).c_str(), g_cfg.get_string(ECI_AppSystemRegeditValue).c_str(), g_render_server_name))
+	//{
+	//	WARNING_EX_LOG("  render server name  failed !!!");
+	//	static const int key_len = 10;
+	//	unsigned char encrypt_key[key_len * 2] = { 0 }; 
+	//	;
+	//	cutil::rand_bytes(encrypt_key, sizeof(encrypt_key), c_rand);
+	//	
+	//	//g_render_server_name = encrypt_key;
+	//	if (!chen::writetoregistry(g_cfg.get_string(ECI_AppSystemRegedit).c_str(), g_cfg.get_string(ECI_AppSystemRegeditValue).c_str(), g_render_server_name))
+	//	{
+	//		WARNING_EX_LOG("wirte render name = [%s]config failed !!!", g_render_server_name.c_str());
+	//	}
+	//}
+	//g_render_server_name = cutil::get_hex_str(g_render_server_name.c_str(), g_render_server_name.length());
+	NORMAL_EX_LOG("[render_server_name = %s]", g_cfg.get_string(ECI_RenderServerName).c_str());
+	if (g_cfg.get_string(ECI_RenderServerName).length() < 3)
+	{
+		static const int key_len = 4;
+		unsigned char encrypt_key[key_len * 2] = { 0 }; 
+		cutil::rand_bytes(encrypt_key, sizeof(encrypt_key), c_rand);
+		g_render_server_name = cutil::get_hex_str(encrypt_key, key_len * 2);
+		g_cfg.set_string(ECI_RenderServerName, "render_server_name", g_render_server_name);
+	}
+	else
+	{
+		g_render_server_name = g_cfg.get_string(ECI_RenderServerName);
+	}
+	
+	NORMAL_EX_LOG("[render_server_name = %s]", g_render_server_name.c_str());
+
+
+
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -158,8 +274,7 @@ BOOL CMFCApplication1App::InitInstance()
 	m_application_wnd->Create(IDD_MFCAPPLICATION1_DIALOG);
 	
 	ShowWindow(m_pMainWnd->GetSafeHwnd(), SW_SHOW);
-
-
+	 
 	return TRUE;
 	CMFCApplication1Dlg dlg;
 	m_pMainWnd = &dlg;

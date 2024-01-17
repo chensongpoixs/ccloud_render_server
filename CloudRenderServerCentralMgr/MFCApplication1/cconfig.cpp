@@ -226,9 +226,11 @@ namespace chen {
 				//m_configs[1].m_data = value; // 保存到map容器中的方法。
 			}
 		}
+		input.close();
 		if (input)
 		{
 			input.close();
+			
 		}
 		return true;
 	}

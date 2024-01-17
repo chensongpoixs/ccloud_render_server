@@ -40,18 +40,15 @@ namespace chen {
 		ECI_TimeAdjust,
 		  
 		ECI_LogLevel,
-		
-
-
-		ECI_GmCmdIp,
-		ECI_GmCmdPort,
-		ECI_GlobalDbHost,
-		ECI_GlobalDbPort,
-		ECI_GlobalDbName,
-		ECI_GlobalDbUsername,
-		ECI_GlobalDbPassword,
+		  
 		 ECI_MediaServerShow,
 		 ECI_RenderServerShow,
+		 ECI_AppSystemRegedit,
+		 ECI_AppSystemRegeditValue,
+		 ECI_RenderServerName,
+		 ECI_CentralIp,
+		 ECI_CentralPort,
+		 ECI_WanPort,
 		ECI_Max,
 	};
 	class ccfg : public cconfig
