@@ -66,6 +66,7 @@ namespace chen {
 		set_string(ECI_CentralIp, "central_ip", "127.0.0.1");
 		set_uint32(ECI_CentralPort, "central_port", 9500);
 		set_uint32(ECI_WanPort, "wan_port", 6300);
+		set_string(ECI_RenderServerIp, "render_server_ip", "");
 		 
 		//配置表的值
 		load_cfg_file();

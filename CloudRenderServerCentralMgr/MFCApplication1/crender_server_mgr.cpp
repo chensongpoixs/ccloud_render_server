@@ -67,7 +67,7 @@ namespace chen {
 		return false;
 	}
 
-	bool crender_server_mgr::startup(const std::string & render_server_id, const std::string &  render_wan_port, const std::string &  centreal_ip, const std::string & centreal_port)
+	bool crender_server_mgr::startup(const std::string & render_server_id, const std::string & render_ip, const std::string &  render_wan_port, const std::string &  centreal_ip, const std::string & centreal_port)
 	{
 		std::string app_path_name = "./RenderServer/render_server.exe";
 		//std::string app_path_name = "D:/Work/UE/builder_V4.2_Release_76_202304042038/builderexe/Rte.exe";
@@ -80,6 +80,7 @@ namespace chen {
 		fprintf(out_file_ptr, "render_server_name = %s\n", g_render_server_name.c_str());
 		fprintf(out_file_ptr, "central_ip = %s\n", centreal_ip.c_str());
 		fprintf(out_file_ptr, "central_port = %s\n", centreal_port.c_str());
+		fprintf(out_file_ptr, "render_server_ip = %s\n", render_ip.c_str());
 		//fprintf(out_file_ptr, "virtual_desktop=0\n" );
 		 
 

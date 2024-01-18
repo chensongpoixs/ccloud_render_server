@@ -172,13 +172,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_WIN32_WINNT=0x0602;_INTSAFE_H_INCLUDED_;_WINSOCK_DEPRECATED_NO_WARNINGS;_WINDOWS;MS_LITTLE_ENDIAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>psapi.lib;user32.lib;advapi32.lib;iphlpapi.lib;userenv.lib;ws2_32.lib;gdiplus.lib;comdlg32.lib;dbghelp.lib;dnsapi.lib;gdi32.lib;msimg32.lib;odbc32.lib;odbccp32.lib;oleaut32.lib;shell32.lib;shlwapi.lib;usp10.lib;uuid.lib;version.lib;wininet.lib;winmm.lib;winspool.lib;delayimp.lib;kernel32.lib;ole32.lib;crypt32.lib;secur32.lib;dmoguids.lib;wmcodecdspuuid.lib;amstrmid.lib;msdmo.lib;strmiids.lib;d3d11.lib;dxgi.lib;d3d10.lib;d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -192,16 +193,25 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="carraysize.h" />
+    <ClInclude Include="carray_view.h" />
     <ClInclude Include="casync_log.h" />
+    <ClInclude Include="cbyte_order.h" />
     <ClInclude Include="ccfg.h" />
     <ClInclude Include="cconfig.h" />
     <ClInclude Include="cdigit2str.h" />
+    <ClInclude Include="cifaddrs_android.h" />
+    <ClInclude Include="cifaddrs_converter.h" />
     <ClInclude Include="cinjector_util.h" />
+    <ClInclude Include="cip_address.h" />
     <ClInclude Include="clib_util.h" />
     <ClInclude Include="clog.h" />
     <ClInclude Include="clog_color.h" />
     <ClInclude Include="clog_define.h" />
     <ClInclude Include="cmedia_rtc_server_mgr.h" />
+    <ClInclude Include="cnetwork.h" />
+    <ClInclude Include="cnetwork_constants.h" />
+    <ClInclude Include="cnet_adapter_test.h" />
     <ClInclude Include="cnet_type.h" />
     <ClInclude Include="cnoncopyable.h" />
     <ClInclude Include="cprocess_define.h" />
@@ -209,10 +219,12 @@
     <ClInclude Include="cregistry.h" />
     <ClInclude Include="crender_server_mgr.h" />
     <ClInclude Include="csingleton.h" />
+    <ClInclude Include="csocket_util.h" />
     <ClInclude Include="ctime_api.h" />
     <ClInclude Include="ctime_const.h" />
     <ClInclude Include="ctime_elapse.h" />
     <ClInclude Include="cutil.h" />
+    <ClInclude Include="cwin32.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFCApplication1.h" />
     <ClInclude Include="MFCApplication1Dlg.h" />
@@ -225,16 +237,23 @@
     <ClCompile Include="ccfg.cpp" />
     <ClCompile Include="cconfig.cpp" />
     <ClCompile Include="cdigit2str.cpp" />
+    <ClCompile Include="cifaddrs_android.cc" />
+    <ClCompile Include="cifaddrs_converter.cc" />
     <ClCompile Include="cinjector_util.cpp" />
+    <ClCompile Include="cip_address.cpp" />
     <ClCompile Include="clog.cpp" />
     <ClCompile Include="clog_color.cpp" />
     <ClCompile Include="cmedia_rtc_server_mgr.cpp" />
+    <ClCompile Include="cnetwork.cpp" />
+    <ClCompile Include="cnet_adapter_test.cpp" />
     <ClCompile Include="cnet_type.cpp" />
     <ClCompile Include="crandom.cpp" />
     <ClCompile Include="cregistry.cpp" />
     <ClCompile Include="crender_server_mgr.cpp" />
+    <ClCompile Include="csocket_util.cpp" />
     <ClCompile Include="ctime_api.cpp" />
     <ClCompile Include="cutil.cpp" />
+    <ClCompile Include="cwin32.cpp" />
     <ClCompile Include="MFCApplication1.cpp" />
     <ClCompile Include="MFCApplication1Dlg.cpp" />
     <ClCompile Include="pch.cpp">

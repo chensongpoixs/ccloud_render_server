@@ -1,4 +1,9 @@
-﻿/*
+﻿/***********************************************************************************************
+created: 		2022-12-27
+
+author:			chensong
+
+purpose:		ip_address
 输赢不重要，答案对你们有什么意义才重要。
 
 光阴者，百代之过客也，唯有奋力奔跑，方能生风起时，是时代造英雄，英雄存在于时代。或许世人道你轻狂，可你本就年少啊。 看护好，自己的理想和激情。
@@ -15,76 +20,31 @@
 沿着自己的回忆，一个个的场景忽闪而过，最后发现，我的本心，在我写代码的时候，会回来。
 安静，淡然，代码就是我的一切，写代码就是我本心回归的最好方式，我还没找到本心猎手，但我相信，顺着这个线索，我一定能顺藤摸瓜，把他揪出来。
 
+************************************************************************************************/
 
-*/
-// MFCApplication1Dlg.h: 头文件
-//
-
-#pragma once
-//#include <gdiplusbitmap.h>
-//#include <gdiplusheaders.h>
-#include <stdio.h>
-#include <afxwin.h>
-#include "afxwin.h"
-#include "cmedia_rtc_server_mgr.h"
-#include <thread>
-#include "crender_server_mgr.h"
-//class Bitmap;
-// CMFCApplication1Dlg 对话框
-class CMFCApplication1Dlg : public CDialog
-{
-// 构造
-public:
-	//CMFCApplication1Dlg();
-	CMFCApplication1Dlg(CWnd* pParent = nullptr);	// 标准构造函数
-
-// 对话框数据
-//#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCAPPLICATION1_DIALOG };
-//#endif
-
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+#ifndef _C_ARRAY_SIZE_H_
+#define _C_ARRAY_SIZE_H_
 
 
-// 实现
-protected:
-	HICON m_hIcon;
+#include <stddef.h>
 
-	CBitmap  m_bitmap;
- 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
+// This file defines the arraysize() macro and is derived from Chromium's
+// base/macros.h.
 
-public:
-	LRESULT OnTrayMessage(WPARAM wParam, LPARAM lParam);
+// The arraysize(arr) macro returns the # of elements in an array arr.
+// The expression is a compile-time constant, and therefore can be
+// used in defining new arrays, for example.  If you use arraysize on
+// a pointer by mistake, you will get a compile-time error.
 
-	 
-	afx_msg void OnDestroy();
-	 
-public:
+// This template function declaration is used in defining arraysize.
+// Note that the function doesn't need an implementation, as we only
+// use its type.
+template <typename T, size_t N>
+char(&ArraySizeHelper(T(&array)[N]))[N];
 
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedRenderserverstart();
-	//afx_msg void OnEnChangelocalhost();
-	//afx_msg void OnStnClickedserverstatus();
-	afx_msg void OnBnClickedrtcserverstart();
-	//afx_msg void OnBnClickedRenderserverstart2();
-	//afx_msg void OnBnClickedMediartcserverstart();
+#define arraysize(array) (sizeof(ArraySizeHelper(array)))
 
-public:
-	void destroy();
-	void _work_ptread();
-private:
-	//chen::cmedia_rtc_server_mgr		m_media_rtc_mgr;
-	chen::crender_server_mgr		m_render_mgr;
-	CComboBox						m_ip_list;
-public:
-	afx_msg void OnBnClickedCloudrenderstart();
-	afx_msg void OnStnClickedBitmap1();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-};
+namespace chen {
+
+}
+#endif // _C_ARRAY_SIZE_H_

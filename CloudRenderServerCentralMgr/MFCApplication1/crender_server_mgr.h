@@ -41,7 +41,7 @@ namespace chen {
 		virtual ~crender_server_mgr();
 	public:
 		bool update();
-		bool startup(const std::string & render_wan_port, const std::string &media_wan_ip, const std::string & media_wan_port, const std::string & p);
+		bool startup(const std::string & render_wan_port, const std::string& render_ip, const std::string &media_wan_ip, const std::string & media_wan_port, const std::string & p);
 		void destroy();
 	public:
 		void close_app();

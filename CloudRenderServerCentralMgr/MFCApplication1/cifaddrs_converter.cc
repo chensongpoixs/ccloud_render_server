@@ -1,4 +1,10 @@
-﻿/*
+﻿/***********************************************************************************************
+created: 		2022-12-27
+
+author:			chensong
+
+purpose:		cmedia_server
+
 输赢不重要，答案对你们有什么意义才重要。
 
 光阴者，百代之过客也，唯有奋力奔跑，方能生风起时，是时代造英雄，英雄存在于时代。或许世人道你轻狂，可你本就年少啊。 看护好，自己的理想和激情。
@@ -14,77 +20,60 @@
 我叫他本心猎手。他可能是和宇宙同在的级别 但是我并不害怕，我仔细回忆自己平淡的一生 寻找本心猎手的痕迹。
 沿着自己的回忆，一个个的场景忽闪而过，最后发现，我的本心，在我写代码的时候，会回来。
 安静，淡然，代码就是我的一切，写代码就是我本心回归的最好方式，我还没找到本心猎手，但我相信，顺着这个线索，我一定能顺藤摸瓜，把他揪出来。
+************************************************************************************************/
 
 
-*/
-// MFCApplication1Dlg.h: 头文件
-//
+#include "cifaddrs_converter.h"
+#if defined(__linux__)
+namespace chen {
 
-#pragma once
-//#include <gdiplusbitmap.h>
-//#include <gdiplusheaders.h>
-#include <stdio.h>
-#include <afxwin.h>
-#include "afxwin.h"
-#include "cmedia_rtc_server_mgr.h"
-#include <thread>
-#include "crender_server_mgr.h"
-//class Bitmap;
-// CMFCApplication1Dlg 对话框
-class CMFCApplication1Dlg : public CDialog
+	cifaddrs_converter::cifaddrs_converter() {}
+
+	cifaddrs_converter::~cifaddrs_converter() {}
+
+bool cifaddrs_converter::ConvertIfAddrsToIPAddress(
+    const struct ifaddrs* interface, cinterface_address* ip, cip_address* mask) 
 {
-// 构造
-public:
-	//CMFCApplication1Dlg();
-	CMFCApplication1Dlg(CWnd* pParent = nullptr);	// 标准构造函数
+  switch (interface->ifa_addr->sa_family) {
+    case AF_INET: {
+      *ip = cinterface_address(cip_address(
+          reinterpret_cast<sockaddr_in*>(interface->ifa_addr)->sin_addr));
+      *mask = cip_address(
+          reinterpret_cast<sockaddr_in*>(interface->ifa_netmask)->sin_addr);
+      return true;
+    }
+    case AF_INET6: {
+      int ip_attributes = IPV6_ADDRESS_FLAG_NONE;
+      if (!ConvertNativeAttributesToIPAttributes(interface, &ip_attributes)) {
+        return false;
+      }
+      *ip = cinterface_address(
+          reinterpret_cast<sockaddr_in6*>(interface->ifa_addr)->sin6_addr,
+          ip_attributes);
+      *mask = cip_address(
+          reinterpret_cast<sockaddr_in6*>(interface->ifa_netmask)->sin6_addr);
+      return true;
+    }
+    default: { return false; }
+  }
+}
 
-// 对话框数据
-//#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCAPPLICATION1_DIALOG };
-//#endif
+bool cifaddrs_converter::ConvertNativeAttributesToIPAttributes(
+    const struct ifaddrs* interface,
+    int* ip_attributes) {
+  *ip_attributes = IPV6_ADDRESS_FLAG_NONE;
+  return true;
+}
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+#if !defined(__APPLE__)
+// For MAC and IOS, it's defined in macifaddrs_converter.cc
+cifaddrs_converter* CreateIfAddrsConverter() {
+  return new cifaddrs_converter();
+}
+#endif
 
 
-// 实现
-protected:
-	HICON m_hIcon;
 
-	CBitmap  m_bitmap;
- 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
+}  // namespace chen
 
-public:
-	LRESULT OnTrayMessage(WPARAM wParam, LPARAM lParam);
-
-	 
-	afx_msg void OnDestroy();
-	 
-public:
-
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedRenderserverstart();
-	//afx_msg void OnEnChangelocalhost();
-	//afx_msg void OnStnClickedserverstatus();
-	afx_msg void OnBnClickedrtcserverstart();
-	//afx_msg void OnBnClickedRenderserverstart2();
-	//afx_msg void OnBnClickedMediartcserverstart();
-
-public:
-	void destroy();
-	void _work_ptread();
-private:
-	//chen::cmedia_rtc_server_mgr		m_media_rtc_mgr;
-	chen::crender_server_mgr		m_render_mgr;
-	CComboBox						m_ip_list;
-public:
-	afx_msg void OnBnClickedCloudrenderstart();
-	afx_msg void OnStnClickedBitmap1();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-};
+#endif

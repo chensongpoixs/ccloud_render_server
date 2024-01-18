@@ -17,6 +17,8 @@
 #define render_server_port              1008
 #define signal_server_port              1009
 #define min_port                        1010
+#define render_server_port2             1010
+#define Render_Server_Wan               1011
 #define RenderServerStart               1012
 #define media_rtc_server_start          1012
 #define CloudRenderStart                1012
@@ -24,6 +26,7 @@
 #define render_server_status            1014
 #define media_rtc_server_status         1015
 #define MediaRtcServerStart             1016
+#define IDC_COMBO1                      1018
 
 // Next default values for new objects
 // 
@@ -31,7 +34,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1018
+#define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

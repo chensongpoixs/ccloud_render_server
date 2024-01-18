@@ -29,7 +29,8 @@
 
 #include "resource.h"		// 主符号
 #include <string>
-
+#include <set>
+#include <vector>
 class CMFCApplication1Dlg;
 
 // CMFCApplication1App:
@@ -54,5 +55,5 @@ private:
 };
 
 extern std::string g_render_server_name;
-
+extern std::vector<std::string> g_render_server_ips;
 extern CMFCApplication1App theApp;

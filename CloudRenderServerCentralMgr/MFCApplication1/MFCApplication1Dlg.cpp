@@ -108,11 +108,12 @@ END_MESSAGE_MAP()
 
 CMFCApplication1Dlg::CMFCApplication1Dlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CMFCApplication1Dlg::IDD, pParent)
+	, m_ip_list()
 	 
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
-
+	
+	
 	
 }
 
@@ -229,6 +230,36 @@ BOOL CMFCApplication1Dlg::OnInitDialog()
 	 
 
 	// GetDlgItem(localhost_IP)->SetWindowText(_T("0"));
+	{
+		std::string wan  =  chen::g_cfg.get_string(chen::ECI_RenderServerIp);
+		int len = MultiByteToWideChar(CP_ACP, 0, wan .c_str(), wan .length(), NULL, 0);
+		std::wstring wwan;
+		wwan.resize(len);
+		MultiByteToWideChar(CP_ACP, 0, wan.c_str(), wan.length(), (LPWSTR)wwan.data(), len);
+	//	GetDlgItem(Render_Server_Wan)->SetWindowText(wwan.c_str());
+
+		CComboBox* list = (CComboBox*)GetDlgItem(Render_Server_Wan);
+		size_t index = 0;
+		for (size_t i = 0; i < g_render_server_ips.size(); ++i)
+		{
+
+			std::string ip = g_render_server_ips[i];
+			if (chen::g_cfg.get_string(chen::ECI_RenderServerIp) == ip)
+			{
+				index = i;
+			}
+			int len = MultiByteToWideChar(CP_ACP, 0, ip.c_str(), ip.length(), NULL, 0);
+			std::wstring wcentral_ip;
+			wcentral_ip.resize(len);
+			MultiByteToWideChar(CP_ACP, 0, ip.c_str(), ip.length(), (LPWSTR)wcentral_ip.data(), len);
+			if (list)
+			{
+				list->InsertString(i, wcentral_ip.c_str());
+			}
+		}
+		list->SetCurSel(index);
+		//list->GetCurSel();
+	}
 	{
 		std::string wan_port = std::to_string(chen::g_cfg.get_uint32(chen::ECI_WanPort));
 		int len = MultiByteToWideChar(CP_ACP, 0, wan_port.c_str(), wan_port.length(), NULL, 0);
@@ -617,13 +648,14 @@ void CMFCApplication1Dlg::OnBnClickedCloudrenderstart()
 	std::string render_server_id = CT2A(str.GetString());
 	GetDlgItem(render_server_port)->GetWindowText(str);
 	std::string render_wan_port = CT2A(str.GetString());
-
+	GetDlgItem(Render_Server_Wan)->GetWindowText(str);
+	std::string render_server_wan = CT2A(str.GetString());
 	GetDlgItem(wan_address)->GetWindowText(str);
 	std::string centreal_ip = CT2A(str.GetString());
 	GetDlgItem(signal_server_port)->GetWindowText(str);
 	std::string centreal_port = CT2A(str.GetString());
 	
-	if (!m_render_mgr.startup(render_server_id, render_wan_port, centreal_ip, centreal_port))
+	if (!m_render_mgr.startup(render_server_id, render_server_wan, render_wan_port, centreal_ip, centreal_port))
 	{
 		GetDlgItem(CloudRenderStart)->SetWindowText(_T("启动失败!!!"));
 		return;

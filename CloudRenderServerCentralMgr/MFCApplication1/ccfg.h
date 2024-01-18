@@ -48,6 +48,7 @@ namespace chen {
 		 ECI_RenderServerName,
 		 ECI_CentralIp,
 		 ECI_CentralPort,
+		 ECI_RenderServerIp,
 		 ECI_WanPort,
 		ECI_Max,
 	};

@@ -1,4 +1,10 @@
-﻿/*
+﻿/***********************************************************************************************
+created: 		2022-12-27
+
+author:			chensong
+
+purpose:		win32
+
 输赢不重要，答案对你们有什么意义才重要。
 
 光阴者，百代之过客也，唯有奋力奔跑，方能生风起时，是时代造英雄，英雄存在于时代。或许世人道你轻狂，可你本就年少啊。 看护好，自己的理想和激情。
@@ -14,77 +20,37 @@
 我叫他本心猎手。他可能是和宇宙同在的级别 但是我并不害怕，我仔细回忆自己平淡的一生 寻找本心猎手的痕迹。
 沿着自己的回忆，一个个的场景忽闪而过，最后发现，我的本心，在我写代码的时候，会回来。
 安静，淡然，代码就是我的一切，写代码就是我本心回归的最好方式，我还没找到本心猎手，但我相信，顺着这个线索，我一定能顺藤摸瓜，把他揪出来。
+************************************************************************************************/
 
+#ifndef _C_NETWORK_CONSTANTS_H_
+#define _C_NETWORK_CONSTANTS_H_
 
-*/
-// MFCApplication1Dlg.h: 头文件
-//
+#include <stdint.h>
 
-#pragma once
-//#include <gdiplusbitmap.h>
-//#include <gdiplusheaders.h>
-#include <stdio.h>
-#include <afxwin.h>
-#include "afxwin.h"
-#include "cmedia_rtc_server_mgr.h"
-#include <thread>
-#include "crender_server_mgr.h"
-//class Bitmap;
-// CMFCApplication1Dlg 对话框
-class CMFCApplication1Dlg : public CDialog
-{
-// 构造
-public:
-	//CMFCApplication1Dlg();
-	CMFCApplication1Dlg(CWnd* pParent = nullptr);	// 标准构造函数
+namespace chen {
 
-// 对话框数据
-//#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCAPPLICATION1_DIALOG };
-//#endif
+static const uint16_t kNetworkCostMax = 999;
+static const uint16_t kNetworkCostHigh = 900;
+static const uint16_t kNetworkCostUnknown = 50;
+static const uint16_t kNetworkCostLow = 10;
+static const uint16_t kNetworkCostMin = 0;
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
-
-
-// 实现
-protected:
-	HICON m_hIcon;
-
-	CBitmap  m_bitmap;
- 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
-
-public:
-	LRESULT OnTrayMessage(WPARAM wParam, LPARAM lParam);
-
-	 
-	afx_msg void OnDestroy();
-	 
-public:
-
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedRenderserverstart();
-	//afx_msg void OnEnChangelocalhost();
-	//afx_msg void OnStnClickedserverstatus();
-	afx_msg void OnBnClickedrtcserverstart();
-	//afx_msg void OnBnClickedRenderserverstart2();
-	//afx_msg void OnBnClickedMediartcserverstart();
-
-public:
-	void destroy();
-	void _work_ptread();
-private:
-	//chen::cmedia_rtc_server_mgr		m_media_rtc_mgr;
-	chen::crender_server_mgr		m_render_mgr;
-	CComboBox						m_ip_list;
-public:
-	afx_msg void OnBnClickedCloudrenderstart();
-	afx_msg void OnStnClickedBitmap1();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+enum AdapterType {
+  // This enum resembles the one in Chromium net::ConnectionType.
+  ADAPTER_TYPE_UNKNOWN = 0,
+  ADAPTER_TYPE_ETHERNET = 1 << 0, // 以太网
+  ADAPTER_TYPE_WIFI = 1 << 1,
+  ADAPTER_TYPE_CELLULAR = 1 << 2,
+  ADAPTER_TYPE_VPN = 1 << 3,
+  ADAPTER_TYPE_LOOPBACK = 1 << 4,
+  // ADAPTER_TYPE_ANY is used for a network, which only contains a single "any
+  // address" IP address (INADDR_ANY for IPv4 or in6addr_any for IPv6), and can
+  // use any/all network interfaces. Whereas ADAPTER_TYPE_UNKNOWN is used
+  // when the network uses a specific interface/IP, but its interface type can
+  // not be determined or not fit in this enum.
+  ADAPTER_TYPE_ANY = 1 << 5,
 };
+
+}  // namespace chen
+
+#endif  // _C_NETWORK_CONSTANTS_H_

@@ -30,7 +30,7 @@
 #include "framework.h"
 #include "MFCApplication1.h"
 #include "MFCApplication1Dlg.h"
-
+#include "csocket_util.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -42,10 +42,12 @@
 #include "crandom.h"
 #include "cutil.h"
 #include "clib_util.h"
+#include "cnet_adapter_test.h"
 // CMFCApplication1App
 
 
 std::string g_render_server_name;
+std::vector<std::string> g_render_server_ips;
 
 BEGIN_MESSAGE_MAP(CMFCApplication1App, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
@@ -193,23 +195,7 @@ BOOL CMFCApplication1App::InitInstance()
 	//	}
 	//}
 	//g_render_server_name = cutil::get_hex_str(g_render_server_name.c_str(), g_render_server_name.length());
-	NORMAL_EX_LOG("[render_server_name = %s]", g_cfg.get_string(ECI_RenderServerName).c_str());
-	if (g_cfg.get_string(ECI_RenderServerName).length() < 3)
-	{
-		static const int key_len = 4;
-		unsigned char encrypt_key[key_len * 2] = { 0 }; 
-		cutil::rand_bytes(encrypt_key, sizeof(encrypt_key), c_rand);
-		g_render_server_name = cutil::get_hex_str(encrypt_key, key_len * 2);
-		g_cfg.set_string(ECI_RenderServerName, "render_server_name", g_render_server_name);
-	}
-	else
-	{
-		g_render_server_name = g_cfg.get_string(ECI_RenderServerName);
-	}
 	
-	NORMAL_EX_LOG("[render_server_name = %s]", g_render_server_name.c_str());
-
-
 
 
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
@@ -267,7 +253,34 @@ BOOL CMFCApplication1App::InitInstance()
 		LOG::destroy();*/
 		return FALSE;
 	}
+	NORMAL_EX_LOG("[render_server_name = %s]", g_cfg.get_string(ECI_RenderServerName).c_str());
+	if (g_cfg.get_string(ECI_RenderServerName).length() < 3)
+	{
+		static const int key_len = 4;
+		unsigned char encrypt_key[key_len * 2] = { 0 };
+		cutil::rand_bytes(encrypt_key, sizeof(encrypt_key), c_rand);
+		g_render_server_name = cutil::get_hex_str(encrypt_key, key_len * 2);
+		g_cfg.set_string(ECI_RenderServerName, "render_server_name", g_render_server_name);
+	}
+	else
+	{
+		g_render_server_name = g_cfg.get_string(ECI_RenderServerName);
+	}
 
+	NORMAL_EX_LOG("[render_server_name = %s]", g_render_server_name.c_str());
+	 
+	std::set<std::string> ips;
+	chen::get_network_ips(ips);
+	for (const std::string& ip : ips)
+	{
+		g_render_server_ips.push_back(ip);
+	}
+	//chen::net_adapter_test();
+	if (g_cfg.get_string(ECI_RenderServerIp).length() < 2)
+	{
+
+		 	g_cfg.set_string(ECI_RenderServerIp, "render_server_ip", g_render_server_ips.size()>0 ?g_render_server_ips[0] : "127.0.0.1");
+	}
 	m_application_wnd = new CMFCApplication1Dlg();
 	//m_application_wnd->SetBackgroundColor(RGB(255, 255, 255));;
 	m_pMainWnd = m_application_wnd;
